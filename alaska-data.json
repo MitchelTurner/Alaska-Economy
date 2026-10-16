@@ -1,0 +1,1081 @@
+{
+  "_note": "Approximate prototype data — VERIFY against primary sources before publishing. Years index 0..9 = 2015..2024.",
+  "years": [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "indicators": {
+    "pop": {
+      "label": "Population",
+      "group": "PEOPLE",
+      "unit": "residents",
+      "format": "thousands → \"740,100\"",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        737.6,
+        741.5,
+        739.7,
+        735.1,
+        731.5,
+        733.4,
+        734.3,
+        733.6,
+        733.4,
+        740.1
+      ],
+      "notes": [
+        "Natural increase (births minus deaths) has kept Alaska roughly flat despite years of net out-migration.",
+        "Growth is concentrated in the Mat-Su Borough; Anchorage and many rural areas are shrinking."
+      ],
+      "source": "Alaska DOLWD population estimates",
+      "updated": "Jul 2025"
+    },
+    "netmig": {
+      "label": "Net migration",
+      "group": "PEOPLE",
+      "unit": "people",
+      "format": "thousands, signed",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        -5.1,
+        -2.8,
+        -7.7,
+        -9.8,
+        -6,
+        -3.5,
+        -1.4,
+        -3,
+        -5.9,
+        -1
+      ],
+      "notes": [
+        "2024 would mark the 12th straight year more people left Alaska than arrived.",
+        "Young adults and working-age families make up most of the outflow."
+      ],
+      "source": "Alaska DOLWD components of change",
+      "updated": "Jul 2025"
+    },
+    "native": {
+      "label": "Alaska Native share",
+      "group": "PEOPLE",
+      "unit": "% of residents",
+      "format": "% 1dp",
+      "higherIsGood": true,
+      "neutral": true,
+      "values": [
+        19.6,
+        19.8,
+        19.9,
+        20,
+        20.1,
+        21.9,
+        22,
+        22.1,
+        22.2,
+        22.3
+      ],
+      "notes": [
+        "The jump in 2020 partly reflects changes in how the Census counts multiracial identity.",
+        "Alaska has the highest Indigenous share of any U.S. state."
+      ],
+      "source": "U.S. Census ACS / DOLWD",
+      "updated": "Sep 2025"
+    },
+    "jobs": {
+      "label": "Nonfarm jobs",
+      "group": "ECONOMY",
+      "unit": "thousand jobs",
+      "format": "thousands → \"334k\"",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        342,
+        338,
+        333,
+        331,
+        333,
+        304,
+        315,
+        324,
+        330,
+        334
+      ],
+      "notes": [
+        "The 2016–2018 recession was driven by oil-price collapse and state budget cuts.",
+        "By 2024 employment was nearly back to its 2015 level."
+      ],
+      "source": "DOLWD Current Employment Statistics",
+      "updated": "Mar 2025"
+    },
+    "unemp": {
+      "label": "Unemployment",
+      "group": "ECONOMY",
+      "unit": "% of labor force",
+      "format": "% 1dp",
+      "higherIsGood": false,
+      "neutral": false,
+      "values": [
+        6.5,
+        6.9,
+        7,
+        6.6,
+        6.1,
+        8.3,
+        6.4,
+        4.4,
+        4.3,
+        4.6
+      ],
+      "notes": [
+        "Record lows in 2022–23 reflect a shrinking labor force as much as job growth.",
+        "Rural unemployment often runs 2–3× the statewide rate."
+      ],
+      "source": "BLS Local Area Unemployment Statistics",
+      "updated": "Mar 2025"
+    },
+    "income": {
+      "label": "Median household income",
+      "group": "ECONOMY",
+      "unit": "USD",
+      "format": "$k 1dp",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        73.4,
+        74.4,
+        73.2,
+        74.3,
+        75.5,
+        77.8,
+        77.8,
+        86.4,
+        86.6,
+        89.3
+      ],
+      "notes": [
+        "Nominal figures — inflation absorbs much of the 2022 jump.",
+        "Alaska’s cost of living, especially food and energy off the road system, is among the nation’s highest."
+      ],
+      "source": "Census ACS 1-year",
+      "updated": "Sep 2025"
+    },
+    "pfd": {
+      "label": "PFD payout",
+      "group": "ECONOMY",
+      "unit": "per resident",
+      "format": "$ whole",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        2072,
+        1022,
+        1100,
+        1600,
+        1606,
+        992,
+        1114,
+        3284,
+        1312,
+        1702
+      ],
+      "notes": [
+        "Since 2016 the Legislature, not the statutory formula, has set the dividend amount.",
+        "2022 included a one-time $662 energy relief payment."
+      ],
+      "source": "Permanent Fund Dividend Division",
+      "updated": "Oct 2024"
+    },
+    "oil": {
+      "label": "Oil production",
+      "group": "RESOURCES",
+      "unit": "thousand barrels / day",
+      "format": "k bbl/day",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        501,
+        490,
+        497,
+        479,
+        466,
+        448,
+        437,
+        433,
+        424,
+        425
+      ],
+      "notes": [
+        "North Slope output peaked near 2 million bbl/day in 1988.",
+        "New fields like Pikka and Willow are expected to lift production later this decade."
+      ],
+      "source": "Alaska Dept. of Revenue",
+      "updated": "Dec 2024"
+    },
+    "oilprice": {
+      "label": "ANS crude price",
+      "group": "RESOURCES",
+      "unit": "USD / barrel",
+      "format": "$/bbl",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        52,
+        43,
+        54,
+        71,
+        65,
+        42,
+        71,
+        99,
+        84,
+        81
+      ],
+      "notes": [
+        "Oil taxes and royalties historically funded most of the state’s unrestricted budget.",
+        "Each $1 change in price moves state revenue by tens of millions."
+      ],
+      "source": "Alaska Dept. of Revenue",
+      "updated": "Dec 2024"
+    },
+    "salmon": {
+      "label": "Salmon harvest",
+      "group": "RESOURCES",
+      "unit": "million fish",
+      "format": "millions of fish",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        268,
+        113,
+        225,
+        115,
+        207,
+        118,
+        234,
+        163,
+        231,
+        105
+      ],
+      "notes": [
+        "Pink salmon run in strong odd-year cycles, creating the sawtooth pattern.",
+        "Bristol Bay sockeye set records while Yukon chinook runs collapsed."
+      ],
+      "source": "ADF&G Commercial Fisheries",
+      "updated": "Jan 2025"
+    },
+    "visitors": {
+      "label": "Visitors",
+      "group": "RESOURCES",
+      "unit": "million per year",
+      "format": "millions 1dp",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        1.95,
+        2,
+        2.2,
+        2.26,
+        2.4,
+        0.4,
+        1.4,
+        2.6,
+        3,
+        3.1
+      ],
+      "notes": [
+        "Cruise passengers account for more than half of all visitors.",
+        "2020’s cancelled cruise season cut visitor volume by roughly 80%."
+      ],
+      "source": "Alaska Visitor Statistics Program",
+      "updated": "Apr 2025"
+    },
+    "temp": {
+      "label": "Temperature anomaly",
+      "group": "CLIMATE",
+      "unit": "°F vs 20th-century avg",
+      "format": "°F signed 1dp",
+      "higherIsGood": false,
+      "neutral": true,
+      "values": [
+        3.6,
+        5.1,
+        2.4,
+        3.5,
+        4.6,
+        0.4,
+        -0.2,
+        0.9,
+        1,
+        0.7
+      ],
+      "notes": [
+        "Alaska is warming roughly twice as fast as the contiguous U.S.",
+        "2016 and 2019 were the two warmest years on record statewide."
+      ],
+      "source": "NOAA NCEI Climate at a Glance",
+      "updated": "Jan 2025"
+    },
+    "home": {
+      "label": "Avg home sale price",
+      "group": "HOUSING",
+      "unit": "USD",
+      "format": "$k",
+      "higherIsGood": false,
+      "neutral": true,
+      "values": [
+        290,
+        295,
+        300,
+        305,
+        312,
+        326,
+        352,
+        371,
+        382,
+        391
+      ],
+      "notes": [
+        "Prices rose roughly 20% between 2020 and 2024 as inventory tightened.",
+        "Few new homes are built each year; construction costs are among the highest in the U.S."
+      ],
+      "source": "AHFC Housing Market Indicators",
+      "updated": "Mar 2025"
+    },
+    "rent": {
+      "label": "Median rent",
+      "group": "HOUSING",
+      "unit": "USD / month",
+      "format": "$/mo",
+      "higherIsGood": false,
+      "neutral": false,
+      "values": [
+        1230,
+        1240,
+        1240,
+        1250,
+        1262,
+        1285,
+        1330,
+        1420,
+        1480,
+        1530
+      ],
+      "notes": [
+        "Rents climbed fastest after 2021 as vacancy rates fell below 5% in Anchorage.",
+        "Housing cost is a leading reason cited by families leaving the state."
+      ],
+      "source": "AHFC / DOLWD Rental Market Survey",
+      "updated": "Jun 2025"
+    },
+    "grad": {
+      "label": "High school graduation",
+      "group": "EDUCATION & HEALTH",
+      "unit": "% 4-year rate",
+      "format": "% 1dp",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        76.1,
+        76.5,
+        78.2,
+        78.5,
+        80.4,
+        81.1,
+        77.9,
+        77.2,
+        78.3,
+        79.6
+      ],
+      "notes": [
+        "Rural districts trail the road system by double digits.",
+        "Pandemic disruption reversed several years of gains in 2021–22."
+      ],
+      "source": "Alaska DEED",
+      "updated": "Dec 2024"
+    },
+    "life": {
+      "label": "Life expectancy",
+      "group": "EDUCATION & HEALTH",
+      "unit": "years at birth",
+      "format": "years 1dp",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        78,
+        77.9,
+        77.8,
+        78,
+        78.1,
+        76.6,
+        74.8,
+        75.8,
+        77,
+        77.5
+      ],
+      "notes": [
+        "COVID-19, overdoses and injuries drove the 2020–21 drop.",
+        "Life expectancy in some rural regions is 7–9 years below Anchorage."
+      ],
+      "source": "Alaska DOH Vital Statistics",
+      "updated": "Feb 2025"
+    },
+    "ice": {
+      "label": "Arctic sea ice minimum",
+      "group": "CLIMATE",
+      "unit": "million km² (Sept)",
+      "format": "M km² 2dp",
+      "higherIsGood": true,
+      "neutral": false,
+      "values": [
+        4.43,
+        4.15,
+        4.67,
+        4.71,
+        4.32,
+        3.92,
+        4.92,
+        4.67,
+        4.23,
+        4.28
+      ],
+      "notes": [
+        "The record low remains 2012 at about 3.4 million km².",
+        "Less ice means more coastal erosion and storm exposure for Arctic villages."
+      ],
+      "source": "NSIDC Sea Ice Index",
+      "updated": "Sep 2024"
+    }
+  },
+  "indicatorGroups": [
+    {
+      "name": "PEOPLE",
+      "keys": [
+        "pop",
+        "netmig",
+        "native"
+      ]
+    },
+    {
+      "name": "ECONOMY",
+      "keys": [
+        "jobs",
+        "unemp",
+        "income",
+        "pfd"
+      ]
+    },
+    {
+      "name": "HOUSING",
+      "keys": [
+        "home",
+        "rent"
+      ]
+    },
+    {
+      "name": "RESOURCES",
+      "keys": [
+        "oil",
+        "oilprice",
+        "salmon",
+        "visitors"
+      ]
+    },
+    {
+      "name": "EDUCATION & HEALTH",
+      "keys": [
+        "grad",
+        "life"
+      ]
+    },
+    {
+      "name": "CLIMATE",
+      "keys": [
+        "temp",
+        "ice"
+      ]
+    }
+  ],
+  "yearNarratives": {
+    "2015": "Oil prices collapsed to about $52, opening a multibillion-dollar budget gap. Still, population peaked near 738k, the PFD paid $2,072, and a run of record-warm years began.",
+    "2016": "Alaska’s warmest year on record (+5.1°F). Recession set in: jobs fell, unemployment hit 6.9%, and the PFD was cut roughly in half to $1,022. The salmon harvest crashed to 113M fish.",
+    "2017": "The recession deepened. Net out-migration reached ~7.7k as jobs slid to 333k. Oil output briefly ticked up and the salmon harvest rebounded to 225M.",
+    "2018": "A fourth straight year of population loss, with out-migration peaking near 9.8k. Oil recovered to ~$71, and Permanent Fund earnings formally began funding state government.",
+    "2019": "The recession ended as jobs stabilized. A July heat wave brought Anchorage its first 90°F day, and tourism hit a then-record ~2.4M visitors.",
+    "2020": "The pandemic erased the cruise season — visitors fell ~80%. Unemployment spiked to 8.3% and oil sank to $42. The Census counted 733,391 Alaskans.",
+    "2021": "Partial recovery. Independent travelers returned, jobs rebuilt to 315k, and net migration came closest to even in a decade. Salmon rebounded to 234M.",
+    "2022": "Oil spiked near $99, funding a record $3,284 PFD including energy relief. Unemployment fell to a historic low of 4.4% in a very tight labor market.",
+    "2023": "Cruise tourism set records and visitors topped ~3M. Unemployment hit a new low of 4.3%, but out-migration (~5.9k) resumed as housing and childcare costs squeezed families.",
+    "2024": "Population ticked up to ~740k on international arrivals. Oil output held steady as Pikka and Willow advanced, while the salmon harvest fell to ~105M."
+  },
+  "regions": [
+    {
+      "abbr": "NWA",
+      "name": "Northwest Arctic",
+      "tileRow": 1,
+      "tileCol": 3,
+      "pop2024_k": 7.5,
+      "changeSince2015_pct": -3,
+      "alaskaNative_pct": 82,
+      "medianIncome_k": 76
+    },
+    {
+      "abbr": "NSB",
+      "name": "North Slope",
+      "tileRow": 1,
+      "tileCol": 4,
+      "pop2024_k": 10.9,
+      "changeSince2015_pct": 2,
+      "alaskaNative_pct": 50,
+      "medianIncome_k": 95
+    },
+    {
+      "abbr": "NOM",
+      "name": "Nome",
+      "tileRow": 2,
+      "tileCol": 2,
+      "pop2024_k": 10,
+      "changeSince2015_pct": 1,
+      "alaskaNative_pct": 74,
+      "medianIncome_k": 68
+    },
+    {
+      "abbr": "YKK",
+      "name": "Yukon-Koyukuk",
+      "tileRow": 2,
+      "tileCol": 3,
+      "pop2024_k": 5.2,
+      "changeSince2015_pct": -8,
+      "alaskaNative_pct": 72,
+      "medianIncome_k": 45
+    },
+    {
+      "abbr": "FBK",
+      "name": "Fairbanks",
+      "tileRow": 2,
+      "tileCol": 4,
+      "pop2024_k": 95.6,
+      "changeSince2015_pct": -3,
+      "alaskaNative_pct": 9,
+      "medianIncome_k": 82
+    },
+    {
+      "abbr": "SEF",
+      "name": "SE Fairbanks",
+      "tileRow": 2,
+      "tileCol": 5,
+      "pop2024_k": 6.8,
+      "changeSince2015_pct": -2,
+      "alaskaNative_pct": 13,
+      "medianIncome_k": 70
+    },
+    {
+      "abbr": "KUS",
+      "name": "Kusilvak",
+      "tileRow": 3,
+      "tileCol": 2,
+      "pop2024_k": 8.4,
+      "changeSince2015_pct": 6,
+      "alaskaNative_pct": 94,
+      "medianIncome_k": 38
+    },
+    {
+      "abbr": "BET",
+      "name": "Bethel",
+      "tileRow": 3,
+      "tileCol": 3,
+      "pop2024_k": 18.6,
+      "changeSince2015_pct": 4,
+      "alaskaNative_pct": 85,
+      "medianIncome_k": 62
+    },
+    {
+      "abbr": "MSU",
+      "name": "Mat-Su",
+      "tileRow": 3,
+      "tileCol": 4,
+      "pop2024_k": 117,
+      "changeSince2015_pct": 15,
+      "alaskaNative_pct": 7,
+      "medianIncome_k": 92
+    },
+    {
+      "abbr": "CRC",
+      "name": "Copper River",
+      "tileRow": 3,
+      "tileCol": 5,
+      "pop2024_k": 9.4,
+      "changeSince2015_pct": -3,
+      "alaskaNative_pct": 16,
+      "medianIncome_k": 80
+    },
+    {
+      "abbr": "JNU",
+      "name": "Juneau",
+      "tileRow": 3,
+      "tileCol": 6,
+      "pop2024_k": 31.6,
+      "changeSince2015_pct": -3,
+      "alaskaNative_pct": 11,
+      "medianIncome_k": 99
+    },
+    {
+      "abbr": "DIL",
+      "name": "Bristol Bay",
+      "tileRow": 4,
+      "tileCol": 2,
+      "pop2024_k": 4.9,
+      "changeSince2015_pct": -2,
+      "alaskaNative_pct": 70,
+      "medianIncome_k": 60
+    },
+    {
+      "abbr": "KEN",
+      "name": "Kenai",
+      "tileRow": 4,
+      "tileCol": 3,
+      "pop2024_k": 62.5,
+      "changeSince2015_pct": 7,
+      "alaskaNative_pct": 9,
+      "medianIncome_k": 76
+    },
+    {
+      "abbr": "ANC",
+      "name": "Anchorage",
+      "tileRow": 4,
+      "tileCol": 4,
+      "pop2024_k": 286,
+      "changeSince2015_pct": -4,
+      "alaskaNative_pct": 9,
+      "medianIncome_k": 98
+    },
+    {
+      "abbr": "SIT",
+      "name": "Sitka",
+      "tileRow": 4,
+      "tileCol": 6,
+      "pop2024_k": 8.4,
+      "changeSince2015_pct": -5,
+      "alaskaNative_pct": 16,
+      "medianIncome_k": 85
+    },
+    {
+      "abbr": "KTN",
+      "name": "Ketchikan",
+      "tileRow": 4,
+      "tileCol": 7,
+      "pop2024_k": 13.7,
+      "changeSince2015_pct": 0,
+      "alaskaNative_pct": 15,
+      "medianIncome_k": 80
+    },
+    {
+      "abbr": "ALE",
+      "name": "Aleutians",
+      "tileRow": 5,
+      "tileCol": 1,
+      "pop2024_k": 7.7,
+      "changeSince2015_pct": -5,
+      "alaskaNative_pct": 30,
+      "medianIncome_k": 75
+    },
+    {
+      "abbr": "KOD",
+      "name": "Kodiak",
+      "tileRow": 5,
+      "tileCol": 3,
+      "pop2024_k": 12.7,
+      "changeSince2015_pct": -8,
+      "alaskaNative_pct": 13,
+      "medianIncome_k": 84
+    }
+  ],
+  "ageProfile": {
+    "bands": [
+      "0–17",
+      "18–24",
+      "25–34",
+      "35–44",
+      "45–54",
+      "55–64",
+      "65+"
+    ],
+    "share2015_pct": [
+      25,
+      10.4,
+      15.6,
+      12.7,
+      13.3,
+      13,
+      10
+    ],
+    "share2024_pct": [
+      23.4,
+      8.8,
+      14.4,
+      14,
+      11.3,
+      12.6,
+      15.5
+    ],
+    "note": "Intermediate years linearly interpolated"
+  },
+  "revenueBudget_B": [
+    {
+      "source": "Oil",
+      "color": "oklch(0.78 0.12 40)",
+      "values": [
+        1.9,
+        1,
+        1.2,
+        1.7,
+        1.5,
+        1,
+        0.9,
+        2.6,
+        2,
+        1.6
+      ]
+    },
+    {
+      "source": "Permanent Fund",
+      "color": "oklch(0.80 0.11 230)",
+      "values": [
+        0,
+        0,
+        0,
+        0,
+        2.7,
+        2.9,
+        3.1,
+        3.1,
+        3.4,
+        3.5
+      ]
+    },
+    {
+      "source": "Savings draw",
+      "color": "oklch(0.72 0.10 290)",
+      "values": [
+        3,
+        3.2,
+        2.6,
+        1,
+        0.2,
+        0.4,
+        0.3,
+        0,
+        0,
+        0.1
+      ]
+    },
+    {
+      "source": "Other",
+      "color": "oklch(0.60 0.02 245)",
+      "values": [
+        0.4,
+        0.4,
+        0.4,
+        0.5,
+        0.5,
+        0.5,
+        0.5,
+        0.6,
+        0.6,
+        0.6
+      ]
+    }
+  ],
+  "salmonByRegion": [
+    {
+      "label": "Bristol Bay sockeye",
+      "unit": "million fish",
+      "values": [
+        36,
+        38,
+        38,
+        41,
+        43,
+        40,
+        40,
+        60,
+        49,
+        39
+      ]
+    },
+    {
+      "label": "Prince William Sd. pink",
+      "unit": "million fish",
+      "values": [
+        98,
+        22,
+        77,
+        26,
+        64,
+        40,
+        63,
+        57,
+        90,
+        20
+      ]
+    },
+    {
+      "label": "Southeast pink",
+      "unit": "million fish",
+      "values": [
+        35,
+        18,
+        37,
+        8,
+        21,
+        8,
+        48,
+        18,
+        49,
+        18
+      ]
+    },
+    {
+      "label": "Kodiak, all species",
+      "unit": "million fish",
+      "values": [
+        40,
+        20,
+        45,
+        15,
+        35,
+        30,
+        40,
+        20,
+        35,
+        15
+      ]
+    },
+    {
+      "label": "Cook Inlet sockeye",
+      "unit": "million fish",
+      "values": [
+        1.8,
+        2.4,
+        2,
+        1,
+        1.4,
+        0.6,
+        1,
+        1.1,
+        1.6,
+        1.3
+      ]
+    },
+    {
+      "label": "Yukon chinook",
+      "unit": "thousand fish",
+      "values": [
+        2,
+        1.8,
+        2.5,
+        1.4,
+        1.6,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "weeklyFoodCost_familyOf4_usd": [
+    {
+      "place": "Anchorage",
+      "usd": 290
+    },
+    {
+      "place": "Fairbanks",
+      "usd": 305
+    },
+    {
+      "place": "Juneau",
+      "usd": 310
+    },
+    {
+      "place": "Kodiak",
+      "usd": 380
+    },
+    {
+      "place": "Bethel",
+      "usd": 480
+    },
+    {
+      "place": "Nome",
+      "usd": 510
+    },
+    {
+      "place": "Utqiaġvik",
+      "usd": 640
+    }
+  ],
+  "wildFoodHarvest_lbPerPerson": [
+    {
+      "region": "Western",
+      "lb": 510
+    },
+    {
+      "region": "Arctic",
+      "lb": 420
+    },
+    {
+      "region": "Southwest",
+      "lb": 380
+    },
+    {
+      "region": "Interior",
+      "lb": 300
+    },
+    {
+      "region": "Southcentral",
+      "lb": 160
+    },
+    {
+      "region": "Southeast",
+      "lb": 145
+    }
+  ],
+  "roadVsRuralGaps": [
+    {
+      "label": "High school graduation",
+      "unit": "%",
+      "roadSystem": 82,
+      "rural": 68
+    },
+    {
+      "label": "Life expectancy",
+      "unit": "yrs",
+      "roadSystem": 79.2,
+      "rural": 71.5
+    },
+    {
+      "label": "Household broadband",
+      "unit": "%",
+      "roadSystem": 92,
+      "rural": 61
+    },
+    {
+      "label": "Median household income",
+      "unit": "k",
+      "roadSystem": 95,
+      "rural": 58
+    }
+  ],
+  "nativeLanguageSpeakers": [
+    {
+      "language": "Central Yup’ik",
+      "speakers": 10000
+    },
+    {
+      "language": "Iñupiaq",
+      "speakers": 2100
+    },
+    {
+      "language": "Siberian Yupik",
+      "speakers": 1000
+    },
+    {
+      "language": "Gwich’in",
+      "speakers": 300
+    },
+    {
+      "language": "Koyukon",
+      "speakers": 150
+    },
+    {
+      "language": "Tlingit",
+      "speakers": 100
+    },
+    {
+      "language": "Haida",
+      "speakers": 10
+    },
+    {
+      "language": "Eyak",
+      "speakers": 0
+    }
+  ],
+  "storyField3D": {
+    "keys": [
+      "pop",
+      "jobs",
+      "oil",
+      "salmon",
+      "visitors",
+      "pfd"
+    ],
+    "labels": [
+      "POP",
+      "JOBS",
+      "OIL",
+      "SALMON",
+      "VISIT",
+      "PFD"
+    ]
+  },
+  "whatIfModel": {
+    "defaults": {
+      "oilPrice": 81,
+      "productionKbd": 425,
+      "dividendSharePct": 25
+    },
+    "ranges": {
+      "oilPrice": [
+        40,
+        130,
+        1
+      ],
+      "productionKbd": [
+        300,
+        600,
+        5
+      ],
+      "dividendSharePct": [
+        0,
+        75,
+        1
+      ]
+    },
+    "constants": {
+      "effectiveOilTake": 0.115,
+      "permanentFundDraw_B": 3.6,
+      "otherRevenue_B": 0.6,
+      "spending_B": 4.9,
+      "eligibleResidents": 640000
+    },
+    "formulas": {
+      "oilRevenue_B": "prod*1000*365*price*0.115/1e9",
+      "pfToGovernment_B": "3.6*(1-share/100)",
+      "dividendPerResident": "share/100*3.6e9/640000",
+      "gap_B": "oilRevenue+pfToGov+0.6-4.9"
+    }
+  },
+  "onboarding": [
+    {
+      "title": "Ten years of Alaska, one swipe",
+      "body": "Scrub from 2015 to 2024 and every chart, map and number updates — people, economy, resources, culture and climate."
+    },
+    {
+      "title": "Meet Aurora, your AI analyst",
+      "body": "Aurora writes the story of each year, explains any chart, flags unusual moves, and answers questions in plain language."
+    },
+    {
+      "title": "Charts in 3D — and 4D",
+      "body": "Drag any 3D chart to rotate it. Press Play and it flows through time. Tap ◎ Point & ask, then tap any number to ask about it."
+    }
+  ]
+}

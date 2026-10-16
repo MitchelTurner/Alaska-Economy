@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:oklch(0.92 0.01 250);font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;text-align:left}
+input{font-family:inherit}
+*::-webkit-scrollbar{display:none}
+a{color:oklch(0.45 0.12 230)}a:hover{color:oklch(0.35 0.12 230)}
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:48px;padding:40px 24px;box-sizing:border-box">
+  <div style="max-width:280px;display:flex;flex-direction:column;gap:12px;color:oklch(0.22 0.03 255)">
+    <div style="font:600 11px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.45 0.03 255)">PROTOTYPE · MOBILE</div>
+    <div style="font-size:40px;font-weight:600;letter-spacing:-0.03em;line-height:1">Alaska Pulse</div>
+    <div style="font-size:15px;line-height:1.5;color:oklch(0.40 0.03 255);text-wrap:pretty">A year-by-year picture of Alaska — people, economy, resources, culture and climate — with Aurora, an AI analyst that explains the numbers.</div>
+    <div style="font-size:12px;line-height:1.5;color:oklch(0.48 0.03 255);text-wrap:pretty">Figures are approximate, compiled for prototyping from public sources (Census, DOLWD, Permanent Fund, ADF&amp;G, NOAA). Verify before publishing.</div>
+  </div>
+
+  <div style="width:390px;height:844px;border-radius:54px;border:11px solid oklch(0.12 0.01 255);box-shadow:0 30px 80px rgba(10,20,40,0.35);background:oklch(0.17 0.03 255);color:oklch(0.96 0.01 240);position:relative;overflow:hidden;flex:none"><div style="position:absolute;inset:0;background:oklch(0.17 0.03 255);filter:{{ themeFilter }};transition:filter .3s">
+    <div style="position:absolute;top:0;left:0;right:0;height:47px;display:flex;justify-content:space-between;align-items:center;padding:0 30px;font:600 15px 'IBM Plex Sans',sans-serif;z-index:5">
+      <span>9:41</span>
+      <div style="width:110px;height:30px;border-radius:20px;background:#000;position:absolute;left:50%;top:8px;transform:translateX(-50%)"></div>
+      <span style="font:500 12px 'IBM Plex Mono',monospace">5G ▮▮▮</span>
+    </div>
+
+    <div ref="{{ scrollRef }}" style="position:absolute;top:47px;left:0;right:0;bottom:84px;overflow-y:auto;overflow-x:hidden">
+
+      <sc-if value="{{ isStory }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:10px 16px 28px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px">
+            <span style="font:600 12px 'IBM Plex Mono',monospace;letter-spacing:0.14em;color:oklch(0.78 0.12 40)">ALASKA PULSE</span>
+            <div style="display:flex;gap:6px">
+              <button onClick="{{ openSaved }}" style="height:40px;padding:0 14px;border-radius:20px;border:1px solid oklch(0.34 0.03 255);font:600 11px 'IBM Plex Mono',monospace;display:flex;align-items:center;gap:6px;white-space:nowrap">★ {{ savedCount }}</button>
+              <button onClick="{{ toggleTheme }}" style="height:40px;padding:0 14px;border-radius:20px;border:1px solid oklch(0.34 0.03 255);font:600 11px 'IBM Plex Mono',monospace;display:flex;align-items:center;gap:6px;white-space:nowrap;width:40px;justify-content:center;padding:0">◐</button>
+              <button onClick="{{ openOnb }}" style="height:40px;padding:0 14px;border-radius:20px;border:1px solid oklch(0.34 0.03 255);font:600 11px 'IBM Plex Mono',monospace;display:flex;align-items:center;gap:6px;white-space:nowrap;width:40px;justify-content:center;padding:0">?</button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:0 4px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="font:500 11px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">THE STORY OF ALASKA IN</div>
+              <div style="font-size:60px;font-weight:600;letter-spacing:-0.04em;line-height:0.95">{{ year }}</div>
+            </div>
+            <button onClick="{{ togglePlay }}" style="height:44px;padding:0 16px;border-radius:22px;background:oklch(0.78 0.12 40);color:oklch(0.17 0.03 255);font:600 12px 'IBM Plex Mono',monospace;display:flex;align-items:center;gap:8px;margin-bottom:6px">{{ playIcon }}</button>
+          </div>
+          <div style="display:flex;gap:3px">
+            <sc-for list="{{ years }}" as="y" hint-placeholder-count="10">
+              <button onClick="{{ y.onClick }}" style="flex:1;height:44px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;padding-bottom:6px;background:{{ y.bg }};color:{{ y.color }};font:500 10px 'IBM Plex Mono',monospace">
+                <div style="width:4px;border-radius:2px;height:{{ y.h }};background:{{ y.bar }}"></div>
+                <span>{{ y.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px;background:oklch(0.21 0.04 200);border:1px solid oklch(0.82 0.14 165 / 0.35)">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:8px;height:8px;border-radius:4px;background:oklch(0.82 0.14 165);box-shadow:0 0 10px oklch(0.82 0.14 165)"></div>
+              <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.82 0.14 165)">CH. 1 · THE YEAR</div>
+            </div>
+            <div style="font-size:17px;line-height:1.5;font-weight:500;text-wrap:pretty">{{ storyLead }}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+              <span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">{{ leadSource }}</span>
+              <div style="display:flex;gap:6px"><button onClick="{{ pinLead }}" style="padding:8px 12px;border-radius:12px;border:1px solid oklch(0.34 0.03 255);font-size:12px;font-weight:600;white-space:nowrap">{{ pinLeadLabel }}</button><button onClick="{{ rewrite }}" style="padding:8px 12px;border-radius:12px;border:1px solid oklch(0.82 0.14 165 / 0.6);color:oklch(0.82 0.14 165);font-size:12px;font-weight:600;white-space:nowrap">{{ rewriteLabel }}</button></div>
+            </div>
+          </div>
+
+          <sc-if value="{{ hasAnoms }}" hint-placeholder-val="{{ false }}">
+            <div style="border-radius:22px;padding:14px 16px;background:oklch(0.21 0.04 200);border:1px solid oklch(0.82 0.14 165 / 0.35);display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:4px;background:oklch(0.82 0.14 165);box-shadow:0 0 10px oklch(0.82 0.14 165)"></div><div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.82 0.14 165)">AURORA FLAGGED · UNUSUAL IN {{ year }}</div></div>
+              <sc-for list="{{ anoms }}" as="a" hint-placeholder-count="2">
+                <button onClick="{{ a.onClick }}" style="display:flex;flex-direction:column;gap:3px;padding:8px 0 2px;border-top:1px solid oklch(0.82 0.14 165 / 0.18)">
+                  <div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline;width:100%"><span style="font-size:14px;font-weight:600">{{ a.label }}</span><span style="font:600 11px 'IBM Plex Mono',monospace;color:{{ a.c }};white-space:nowrap">{{ a.chg }} · {{ a.z }}</span></div>
+                  <span style="font-size:12px;line-height:1.45;color:oklch(0.80 0.01 245);text-wrap:pretty">{{ a.why }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <div style="background:oklch(0.20 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:14px 12px 12px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 4px">
+              <span style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">3D · TEN YEARS × SIX SIGNALS</span>
+              <span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.55 0.02 245)">drag to rotate</span>
+            </div>
+            {{ fieldSvg }}
+            <div style="display:flex;flex-wrap:wrap;gap:6px 10px;padding:0 4px">
+              <sc-for list="{{ legend }}" as="lg" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:5px;font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.80 0.01 245)"><div style="width:8px;height:8px;border-radius:2px;background:{{ lg.c }}"></div>{{ lg.label }}</div>
+              </sc-for>
+            </div>
+            <div style="font-size:12px;line-height:1.45;color:oklch(0.72 0.02 245);padding:2px 4px 0;text-wrap:pretty">Each bar is a signal’s value scaled to its own 10-year range. Press play and the field grows through time — {{ year }} is lit.</div>
+          </div>
+
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:8px">
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">CH. 2 · PEOPLE</div>
+            <div style="font-size:15px;line-height:1.55;text-wrap:pretty">{{ people }}</div>
+            <div style="border-radius:16px;background:oklch(0.19 0.03 255);padding:10px 8px 8px;display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;padding:0 6px;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245)"><span>3D · AGE PROFILE × TIME</span><span style="color:oklch(0.55 0.02 245);letter-spacing:0">drag</span></div>
+              {{ pyrSvg }}
+              <div style="padding:0 6px;font:500 11px 'IBM Plex Mono',monospace;line-height:1.5">{{ pyrRead }}</div>
+            </div>
+          </div>
+
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">CH. 3 · MONEY</div>
+            <div style="font-size:15px;line-height:1.55;text-wrap:pretty">{{ money }}</div>
+            <div style="border-radius:16px;background:oklch(0.19 0.03 255);padding:10px 8px 8px;display:flex;flex-direction:column;gap:6px">
+              <div style="padding:0 6px;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245)">STATE REVENUE RIBBON · UNRESTRICTED $B</div>
+              {{ ribbonSvg }}
+              <div style="display:flex;flex-wrap:wrap;gap:6px 12px;padding:0 6px">
+                <sc-for list="{{ ribLegend }}" as="rl" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:5px;font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.85 0.01 245)"><div style="width:8px;height:8px;border-radius:2px;background:{{ rl.c }}"></div>{{ rl.label }} {{ rl.v }}</div></sc-for>
+              </div>
+              <div style="padding:0 6px;font-size:12px;line-height:1.45;color:oklch(0.72 0.02 245);text-wrap:pretty">{{ ribRead }}</div>
+            </div>
+            <button onClick="{{ openWhatIf }}" style="padding:14px;border-radius:16px;border:1px solid oklch(0.34 0.03 255);font-size:14px;font-weight:500;text-align:center;display:flex;justify-content:space-between;gap:8px;text-align:left"><span>⚙ What if oil hits $100? Run the simulator</span><span>→</span></button>
+            <div style="border-radius:16px;background:oklch(0.19 0.03 255);padding:10px 6px 8px;display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;justify-content:space-between;padding:0 6px;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245)"><span>4D · OIL → PFD → JOBS</span><span style="color:oklch(0.55 0.02 245);letter-spacing:0">drag</span></div>
+              {{ trajSvg }}
+              <div style="padding:0 6px;font:500 11px 'IBM Plex Mono',monospace;color:oklch(0.96 0.01 240)">{{ trajRead }}</div>
+            </div>
+          </div>
+
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:8px">
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">CH. 4 · LAND, SEA &amp; SKY</div>
+            <div style="font-size:15px;line-height:1.55;text-wrap:pretty">{{ land }}</div>
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245);padding-top:4px">SALMON BY REGION · SMALL MULTIPLES</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <sc-for list="{{ salmonR }}" as="sr" hint-placeholder-count="6">
+                <button onClick="{{ sr.onClick }}" style="border-radius:14px;background:oklch(0.19 0.03 255);padding:10px;display:flex;flex-direction:column;gap:4px;min-width:0">
+                  <span style="font-size:11px;color:oklch(0.80 0.01 245);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">{{ sr.label }}</span>
+                  <span style="font:600 14px 'IBM Plex Mono',monospace">{{ sr.val }}</span>
+                  <div style="display:flex;align-items:flex-end;gap:2px;height:34px;width:100%"><sc-for list="{{ sr.bars }}" as="b" hint-placeholder-count="10"><div style="flex:1;border-radius:2px;height:{{ b.h }};background:{{ b.bg }}"></div></sc-for></div>
+                </button>
+              </sc-for>
+            </div>
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245);padding-top:6px">CLIMATE STRIPES · TEMP ANOMALY 1975–2024</div>
+            <div style="display:flex;height:64px;border-radius:12px;overflow:hidden">
+              <sc-for list="{{ stripes }}" as="s" hint-placeholder-count="50"><div style="flex:1;background:{{ s.bg }};box-shadow:{{ s.o }}"></div></sc-for>
+            </div>
+            <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.60 0.02 245)"><span>1975</span><span>pre-2015 illustrative</span><span>2024</span></div>
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245);padding-top:6px">ARCTIC SEA ICE · SEPTEMBER MINIMUM</div>
+            <div style="display:flex;align-items:flex-end;gap:4px;height:56px"><sc-for list="{{ iceBars }}" as="b" hint-placeholder-count="10"><div style="flex:1;border-radius:3px;height:{{ b.h }};background:{{ b.bg }}"></div></sc-for></div>
+            <div style="font:500 11px 'IBM Plex Mono',monospace">{{ iceRead }}</div>
+          </div>
+
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">CH. 5 · HOME &amp; COST OF LIVING</div>
+            <div style="font-size:15px;line-height:1.55;text-wrap:pretty">{{ home }}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <sc-for list="{{ homeStats }}" as="hs" hint-placeholder-count="2">
+                <button onClick="{{ hs.onClick }}" style="border-radius:14px;background:oklch(0.19 0.03 255);padding:12px;display:flex;flex-direction:column;gap:2px"><span style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245);font-size:9px">{{ hs.label }}</span><span style="font-size:22px;font-weight:600">{{ hs.v }}</span><span style="font:500 10px 'IBM Plex Mono',monospace;color:{{ hs.dc }}">{{ hs.d }}</span></button>
+              </sc-for>
+            </div>
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245);padding-top:4px">WEEKLY FOOD COST · FAMILY OF FOUR</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <sc-for list="{{ food }}" as="fd" hint-placeholder-count="7"><div style="display:grid;grid-template-columns:84px 1fr 44px;align-items:center;gap:8px"><span style="font-size:12px">{{ fd.name }}</span><div style="height:10px;border-radius:5px;background:oklch(0.28 0.03 255);overflow:hidden"><div style="height:100%;border-radius:5px;width:{{ fd.w }};background:{{ fd.bg }}"></div></div><span style="font:500 11px 'IBM Plex Mono',monospace;text-align:right;color:oklch(0.72 0.02 245)">{{ fd.v }}</span></div></sc-for>
+            </div>
+            <div style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.55 0.02 245)">Approx. · UAF Cooperative Extension Food Cost Survey</div>
+          </div>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">CH. 6 · CULTURE &amp; SUBSISTENCE</div>
+            <div style="font-size:15px;line-height:1.55;text-wrap:pretty">{{ culture }}</div>
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245);padding-top:4px">WILD FOOD HARVEST · LB PER PERSON / YEAR (RURAL)</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <sc-for list="{{ subs }}" as="sb" hint-placeholder-count="6"><div style="display:grid;grid-template-columns:90px 1fr 54px;align-items:center;gap:8px"><span style="font-size:12px">{{ sb.name }}</span><div style="height:10px;border-radius:5px;background:oklch(0.28 0.03 255);overflow:hidden"><div style="height:100%;border-radius:5px;width:{{ sb.w }};background:oklch(0.82 0.14 165)"></div></div><span style="font:500 11px 'IBM Plex Mono',monospace;text-align:right;color:oklch(0.72 0.02 245)">{{ sb.v }}</span></div></sc-for>
+            </div>
+            <button onClick="{{ openLangs }}" style="align-self:flex-start;font-size:13px;font-weight:600;color:oklch(0.78 0.12 40);padding:6px 0;min-height:32px">See living languages →</button>
+          </div>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">CH. 7 · LEARNING &amp; HEALTH</div>
+            <div style="font-size:15px;line-height:1.55;text-wrap:pretty">{{ health }}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <sc-for list="{{ healthStats }}" as="hs" hint-placeholder-count="2">
+                <button onClick="{{ hs.onClick }}" style="border-radius:14px;background:oklch(0.19 0.03 255);padding:12px;display:flex;flex-direction:column;gap:2px"><span style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245);font-size:9px">{{ hs.label }}</span><span style="font-size:22px;font-weight:600">{{ hs.v }}</span><span style="font:500 10px 'IBM Plex Mono',monospace;color:{{ hs.dc }}">{{ hs.d }}</span></button>
+              </sc-for>
+            </div>
+            <sc-for list="{{ gaps }}" as="gp" hint-placeholder-count="4">
+              <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0">
+                <span style="font-size:12px;font-weight:500">{{ gp.label }}</span>
+                <div style="display:grid;grid-template-columns:64px 1fr 52px;gap:8px;align-items:center"><span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245);font-size:9px">ROAD SYS</span><div style="height:8px;border-radius:4px;background:oklch(0.28 0.03 255)"><div style="height:100%;border-radius:4px;width:{{ gp.wa }};background:oklch(0.80 0.11 230)"></div></div><span style="font:500 10px 'IBM Plex Mono',monospace;text-align:right">{{ gp.a }}</span></div>
+                <div style="display:grid;grid-template-columns:64px 1fr 52px;gap:8px;align-items:center"><span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245);font-size:9px">RURAL</span><div style="height:8px;border-radius:4px;background:oklch(0.28 0.03 255)"><div style="height:100%;border-radius:4px;width:{{ gp.wb }};background:oklch(0.78 0.12 40)"></div></div><span style="font:500 10px 'IBM Plex Mono',monospace;text-align:right">{{ gp.b }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:14px 14px 6px;display:flex;flex-direction:column">
+            <div style="display:grid;grid-template-columns:1fr 70px 78px 34px;gap:6px;font:600 9px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245);padding-bottom:8px;border-bottom:1px solid oklch(0.30 0.03 255)">
+              <span>SIGNAL · {{ year }}</span><span style="text-align:right">VALUE</span><span style="text-align:right">YOY</span><span style="text-align:right">RANK</span>
+            </div>
+            <sc-for list="{{ signals }}" as="sg" hint-placeholder-count="12">
+              <button onClick="{{ sg.onClick }}" style="display:grid;grid-template-columns:1fr 70px 78px 34px;gap:6px;align-items:center;min-height:34px;border-bottom:1px solid oklch(0.27 0.03 255)">
+                <span style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ sg.label }}</span>
+                <span style="font:600 11px 'IBM Plex Mono',monospace;text-align:right">{{ sg.value }}</span>
+                <span style="font:500 10px 'IBM Plex Mono',monospace;text-align:right;color:{{ sg.dColor }}">{{ sg.delta }}</span>
+                <span style="font:500 10px 'IBM Plex Mono',monospace;text-align:right;color:oklch(0.72 0.02 245)">{{ sg.rank }}</span>
+              </button>
+            </sc-for>
+            <div style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.55 0.02 245);padding:8px 0 4px">Rank = position among 2015–2024, highest first</div>
+          </div>
+          <button onClick="{{ askYear }}" style="padding:14px;border-radius:16px;background:oklch(0.82 0.14 165);color:oklch(0.17 0.03 255);font-size:14px;font-weight:600;text-align:center">Discuss {{ year }} with Aurora →</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isPulse }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:10px 20px 28px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="font:500 11px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">ALASKA · YEAR IN DATA</div>
+              <div style="font-size:60px;font-weight:600;letter-spacing:-0.04em;line-height:0.95">{{ year }}</div>
+            </div>
+            <div style="display:flex;gap:8px;padding-bottom:6px">
+              <button onClick="{{ prevYear }}" style="width:40px;height:40px;border-radius:20px;border:1px solid oklch(0.34 0.03 255);font-size:20px;display:flex;align-items:center;justify-content:center">‹</button>
+              <button onClick="{{ nextYear }}" style="width:40px;height:40px;border-radius:20px;border:1px solid oklch(0.34 0.03 255);font-size:20px;display:flex;align-items:center;justify-content:center">›</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:3px">
+            <sc-for list="{{ years }}" as="y" hint-placeholder-count="10">
+              <button onClick="{{ y.onClick }}" style="flex:1;height:44px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;padding-bottom:6px;background:{{ y.bg }};color:{{ y.color }};font:500 10px 'IBM Plex Mono',monospace;transition:background .25s">
+                <div style="width:4px;border-radius:2px;height:{{ y.h }};background:{{ y.bar }};transition:height .3s"></div>
+                <span>{{ y.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:18px 16px 12px;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">POPULATION</div>
+              <div style="font:500 12px 'IBM Plex Mono',monospace;color:{{ popDeltaColor }}">{{ popDelta }}</div>
+            </div>
+            <div style="font-size:40px;font-weight:600;letter-spacing:-0.03em;line-height:1.05">{{ popStr }}</div>
+            <svg viewBox="0 0 326 120" width="100%" height="120" style="display:block;overflow:visible">
+              <path d="{{ popArea }}" fill="oklch(0.78 0.12 40 / 0.16)"></path>
+              <path d="{{ popLine }}" fill="none" stroke="oklch(0.78 0.12 40)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"></path>
+              <line x1="{{ popX }}" x2="{{ popX }}" y1="0" y2="104" stroke="oklch(0.96 0.01 240 / 0.35)" stroke-dasharray="3 3"></line>
+              <circle cx="{{ popX }}" cy="{{ popY }}" r="6" fill="oklch(0.17 0.03 255)" stroke="oklch(0.96 0.01 240)" stroke-width="2.5"></circle>
+              <text x="0" y="118" fill="oklch(0.72 0.02 245)" font-family="IBM Plex Mono" font-size="10">2015</text>
+              <text x="326" y="118" text-anchor="end" fill="oklch(0.72 0.02 245)" font-family="IBM Plex Mono" font-size="10">2024</text>
+            </svg>
+          </div>
+
+          <div style="border-radius:22px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;background:oklch(0.21 0.04 200);border:1px solid oklch(0.82 0.14 165 / 0.35)">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:8px;height:8px;border-radius:4px;background:oklch(0.82 0.14 165);box-shadow:0 0 10px oklch(0.82 0.14 165)"></div>
+              <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.82 0.14 165)">AURORA · THE YEAR IN ONE PARAGRAPH</div>
+            </div>
+            <div style="font-size:15px;line-height:1.55;text-wrap:pretty">{{ narrative }}</div>
+            <button onClick="{{ askYear }}" style="align-self:flex-start;padding:10px 14px;border-radius:14px;background:oklch(0.82 0.14 165);color:oklch(0.17 0.03 255);font-size:13px;font-weight:600">Ask why →</button>
+          </div>
+
+          <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245);padding-top:6px">VITAL SIGNS · TAP TO EXPLORE</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="6">
+              <button onClick="{{ t.onClick }}" style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:6px;min-height:132px">
+                <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.08em;color:oklch(0.72 0.02 245)">{{ t.label }}</div>
+                <div style="display:flex;align-items:baseline;gap:4px">
+                  <span style="font-size:24px;font-weight:600;letter-spacing:-0.02em">{{ t.value }}</span>
+                </div>
+                <div style="font:500 11px 'IBM Plex Mono',monospace;color:{{ t.dColor }}">{{ t.delta }}</div>
+                <div style="display:flex;align-items:flex-end;gap:2px;height:30px;margin-top:auto">
+                  <sc-for list="{{ t.bars }}" as="b" hint-placeholder-count="10">
+                    <div style="flex:1;border-radius:2px;height:{{ b.h }};background:{{ b.bg }};transition:height .3s,background .3s"></div>
+                  </sc-for>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:18px 16px;display:flex;flex-direction:column;gap:14px">
+            <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">WHO LIVES HERE</div>
+            <div style="display:flex;gap:16px">
+              <button onClick="{{ openNative }}" style="flex:1;display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:30px;font-weight:600;letter-spacing:-0.02em;color:oklch(0.82 0.14 165)">{{ nativeStr }}</span>
+                <span style="font-size:12px;line-height:1.35;color:oklch(0.72 0.02 245)">Alaska Native, alone or in combination</span>
+              </button>
+              <button onClick="{{ openMig }}" style="flex:1;display:flex;flex-direction:column;gap:2px">
+                <span style="font-size:30px;font-weight:600;letter-spacing:-0.02em;color:oklch(0.78 0.12 40)">{{ migStr }}</span>
+                <span style="font-size:12px;line-height:1.35;color:oklch(0.72 0.02 245)">Net migration, people</span>
+              </button>
+            </div>
+            <div style="height:12px;border-radius:6px;overflow:hidden;display:flex;background:oklch(0.32 0.03 255)">
+              <div style="height:100%;width:{{ nativeW }};background:oklch(0.82 0.14 165);transition:width .4s"></div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isExplore }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:10px 20px 28px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="font:500 11px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">17 INDICATORS · 2015–2024</div>
+            <div style="font-size:34px;font-weight:600;letter-spacing:-0.03em">Explore</div>
+          </div>
+          <button onClick="{{ openCompare }}" style="border-radius:20px;padding:16px;background:oklch(0.78 0.12 40);color:oklch(0.17 0.03 255);display:flex;justify-content:space-between;align-items:center">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <span style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em">COMPARE</span>
+              <span style="font-size:19px;font-weight:600">{{ compareLabel }}</span>
+            </div>
+            <span style="font-size:22px">→</span>
+          </button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <button onClick="{{ openWhatIf }}" style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px;gap:4px;padding:14px"><span style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">WHAT-IF</span><span style="font-size:15px;font-weight:600">Oil &amp; dividend simulator</span></button>
+            <button onClick="{{ openSaved }}" style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px;gap:4px;padding:14px"><span style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">SAVED</span><span style="font-size:15px;font-weight:600">{{ savedCount }} pinned insights</span></button>
+          </div>
+          <button onClick="{{ exportAll }}" style="padding:14px;border-radius:16px;border:1px solid oklch(0.34 0.03 255);font-size:14px;font-weight:500;text-align:center;font-size:13px">⇩ Export all 17 indicators (CSV)</button>
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+            <div style="display:flex;flex-direction:column;gap:8px;padding-top:8px">
+              <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">{{ g.name }}</div>
+              <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                <button onClick="{{ it.onClick }}" style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;min-height:56px">
+                  <div style="flex:1;display:flex;flex-direction:column;gap:2px;min-width:0">
+                    <span style="font-size:14px;font-weight:500">{{ it.label }}</span>
+                    <span style="font:500 11px 'IBM Plex Mono',monospace;color:{{ it.dColor }}">{{ it.value }} · {{ it.delta }}</span>
+                  </div>
+                  <div style="display:flex;align-items:flex-end;gap:2px;height:28px;width:90px">
+                    <sc-for list="{{ it.bars }}" as="b" hint-placeholder-count="10">
+                      <div style="flex:1;border-radius:2px;height:{{ b.h }};background:{{ b.bg }}"></div>
+                    </sc-for>
+                  </div>
+                  <span style="color:oklch(0.72 0.02 245)">›</span>
+                </button>
+              </sc-for>
+            </div>
+          </sc-for>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;margin-top:8px">
+            <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">CULTURE · LIVING LANGUAGES</div>
+            <div style="font-size:15px;line-height:1.45;text-wrap:pretty">Alaska recognizes 20 Alaska Native languages. Approximate number of speakers:</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ langs }}" as="l" hint-placeholder-count="7">
+                <div style="display:grid;grid-template-columns:104px 1fr 54px;align-items:center;gap:8px">
+                  <span style="font-size:13px">{{ l.name }}</span>
+                  <div style="height:10px;border-radius:5px;background:oklch(0.30 0.03 255);overflow:hidden">
+                    <div style="height:100%;width:{{ l.w }};background:oklch(0.82 0.14 165);border-radius:5px"></div>
+                  </div>
+                  <span style="font:500 11px 'IBM Plex Mono',monospace;text-align:right;color:oklch(0.72 0.02 245)">{{ l.n }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <button onClick="{{ askLang }}" style="align-self:flex-start;font-size:13px;font-weight:600;color:oklch(0.82 0.14 165);padding:6px 0">Ask Aurora about revitalization →</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTopic }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:6px 20px 28px;display:flex;flex-direction:column;gap:16px">
+          <button onClick="{{ backExplore }}" style="align-self:flex-start;font-size:15px;color:oklch(0.80 0.11 230);padding:8px 0;min-height:44px">‹ {{ backLabel }}</button>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="font:500 11px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">{{ tp.group }}</div>
+            <div style="font-size:30px;font-weight:600;letter-spacing:-0.03em;line-height:1.1">{{ tp.label }}</div>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span style="font-size:52px;font-weight:600;letter-spacing:-0.04em;line-height:1;color:{{ tp.color }}">{{ tp.value }}</span>
+            <span style="font-size:14px;color:oklch(0.72 0.02 245)">{{ tp.unit }} · {{ year }}</span>
+          </div>
+          <div style="font:500 12px 'IBM Plex Mono',monospace;color:{{ tp.dColor }}">{{ tp.delta }}</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            <button onClick="{{ tp.pin }}" style="height:40px;padding:0 14px;border-radius:20px;border:1px solid oklch(0.34 0.03 255);font:600 11px 'IBM Plex Mono',monospace;display:flex;align-items:center;gap:6px;white-space:nowrap">{{ tp.pinLabel }}</button>
+            <sc-if value="{{ tp.hasWhatIf }}" hint-placeholder-val="{{ false }}"><button onClick="{{ openWhatIf }}" style="height:40px;padding:0 14px;border-radius:20px;border:1px solid oklch(0.34 0.03 255);font:600 11px 'IBM Plex Mono',monospace;display:flex;align-items:center;gap:6px;white-space:nowrap">⚙ What-if</button></sc-if>
+            <span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.60 0.02 245)">SRC · {{ tp.src }}</span>
+          </div>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px 12px 12px">
+            <div style="display:flex;align-items:flex-end;gap:5px;height:190px">
+              <sc-for list="{{ tp.bars }}" as="b" hint-placeholder-count="10">
+                <button onClick="{{ b.onClick }}" style="flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;position:relative">
+                  <span style="font-size:9px;line-height:10px;height:10px;color:oklch(0.82 0.14 165)">{{ b.flag }}</span><span style="position:absolute;top:0;left:50%;transform:translateX(-50%);font:600 10px 'IBM Plex Mono',monospace;color:oklch(0.96 0.01 240);opacity:{{ b.op }};white-space:nowrap;pointer-events:none">{{ b.v }}</span>
+                  <div style="width:100%;border-radius:6px;height:{{ b.h }};background:{{ b.bg }};transition:height .4s,background .25s"></div>
+                </button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:5px;margin-top:8px">
+              <sc-for list="{{ tp.bars }}" as="b" hint-placeholder-count="10">
+                <span style="flex:1;text-align:center;font:500 10px 'IBM Plex Mono',monospace;color:{{ b.lc }}">{{ b.y }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;background:oklch(0.22 0.03 255);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:2px">
+              <span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">LOW</span><span style="font-size:16px;font-weight:600">{{ tp.lo }}</span>
+            </div>
+            <div style="flex:1;background:oklch(0.22 0.03 255);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:2px">
+              <span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">HIGH</span><span style="font-size:16px;font-weight:600">{{ tp.hi }}</span>
+            </div>
+            <div style="flex:1;background:oklch(0.22 0.03 255);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:2px">
+              <span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">10-YR</span><span style="font-size:16px;font-weight:600">{{ tp.span }}</span>
+            </div>
+          </div>
+          <div style="border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px;background:oklch(0.21 0.04 200);border:1px solid oklch(0.82 0.14 165 / 0.35)">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:8px;height:8px;border-radius:4px;background:oklch(0.82 0.14 165);box-shadow:0 0 10px oklch(0.82 0.14 165)"></div>
+              <div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.82 0.14 165)">AURORA · EXPLAIN THIS CHART</div>
+            </div>
+            <sc-if value="{{ hasExplain }}" hint-placeholder-val="{{ false }}">
+              <div style="font-size:15px;line-height:1.55;text-wrap:pretty">{{ explainText }}</div>
+            </sc-if>
+            <sc-if value="{{ explainBusy }}" hint-placeholder-val="{{ false }}">
+              <div style="font:500 12px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">Reading the numbers…</div>
+            </sc-if>
+            <sc-if value="{{ showExplainBtn }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ explain }}" style="align-self:flex-start;padding:10px 14px;border-radius:14px;background:oklch(0.82 0.14 165);color:oklch(0.17 0.03 255);font-size:13px;font-weight:600">Explain {{ year }} in context</button>
+            </sc-if>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">CONTEXT</div>
+            <sc-for list="{{ tp.notes }}" as="n" hint-placeholder-count="2">
+              <div style="display:flex;gap:10px;font-size:14px;line-height:1.5;color:oklch(0.88 0.01 240)"><span style="color:{{ tp.color }}">◆</span><span style="text-wrap:pretty">{{ n }}</span></div>
+            </sc-for>
+          </div>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:20px;padding:12px 14px;display:flex;flex-direction:column">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:6px"><span style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">RAW DATA</span><button onClick="{{ tp.exportCsv }}" style="font:600 11px 'IBM Plex Mono',monospace;color:oklch(0.80 0.11 230);min-height:32px">⇩ CSV</button></div>
+            <div style="display:grid;grid-template-columns:64px 1fr 1fr 40px;gap:6px;padding:6px 0;border-bottom:1px solid oklch(0.30 0.03 255);font:600 9px 'IBM Plex Mono',monospace;letter-spacing:0.1em;color:oklch(0.72 0.02 245)">
+              <button onClick="{{ tp.onSortY }}" style="font:inherit;letter-spacing:inherit;color:inherit;min-height:24px">{{ tp.sortY }}</button><button onClick="{{ tp.onSortV }}" style="font:inherit;letter-spacing:inherit;color:inherit;text-align:right">{{ tp.sortV }}</button><span style="text-align:right">YOY</span><span style="text-align:right">FLAG</span>
+            </div>
+            <sc-for list="{{ tp.rows }}" as="rw" hint-placeholder-count="10">
+              <div style="display:grid;grid-template-columns:64px 1fr 1fr 40px;gap:6px;padding:7px 0;border-bottom:1px solid oklch(0.27 0.03 255);font:500 11px 'IBM Plex Mono',monospace;color:{{ rw.c }}">
+                <span>{{ rw.y }}</span><span style="text-align:right">{{ rw.vs }}</span><span style="text-align:right;color:oklch(0.72 0.02 245)">{{ rw.yoy }}</span><span style="text-align:right;color:oklch(0.82 0.14 165)">{{ rw.flag }}</span>
+              </div>
+            </sc-for>
+            <div style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.60 0.02 245);padding-top:8px;line-height:1.5">Source: {{ tp.src }} · updated {{ tp.updated }} · ◆ = yearly change beyond 1.5σ</div>
+          </div>
+          <button onClick="{{ askTopic }}" style="padding:14px;border-radius:16px;border:1px solid oklch(0.34 0.03 255);font-size:14px;font-weight:500;text-align:center">Ask Aurora a question about this →</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isCompare }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:6px 20px 28px;display:flex;flex-direction:column;gap:16px">
+          <button onClick="{{ backExplore }}" style="align-self:flex-start;font-size:15px;color:oklch(0.80 0.11 230);padding:8px 0;min-height:44px">‹ Explore</button>
+          <div style="font-size:30px;font-weight:600;letter-spacing:-0.03em;line-height:1.1">Compare</div>
+          <div style="display:flex;gap:4px;padding:4px;border-radius:14px;background:oklch(0.22 0.03 255)"><sc-for list="{{ cmpModes }}" as="cm" hint-placeholder-count="2"><button onClick="{{ cm.onClick }}" style="flex:1;height:38px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;background:{{ cm.bg }};color:{{ cm.color }}">{{ cm.label }}</button></sc-for></div>
+          <sc-if value="{{ isCmpRegions }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245);color:oklch(0.78 0.12 40)">REGION A · {{ regAName }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px"><sc-for list="{{ regA }}" as="c" hint-placeholder-count="18"><button onClick="{{ c.onClick }}" style="flex:none;width:calc((100% - 20px) / 6);height:34px;border-radius:9px;text-align:center;font:500 10px 'IBM Plex Mono',monospace;background:{{ c.bg }};color:{{ c.color }}">{{ c.label }}</button></sc-for></div>
+              <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245);color:oklch(0.80 0.11 230);padding-top:6px">REGION B · {{ regBName }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px"><sc-for list="{{ regB }}" as="c" hint-placeholder-count="18"><button onClick="{{ c.onClick }}" style="flex:none;width:calc((100% - 20px) / 6);height:34px;border-radius:9px;text-align:center;font:500 10px 'IBM Plex Mono',monospace;background:{{ c.bg }};color:{{ c.color }}">{{ c.label }}</button></sc-for></div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isCmpYears }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">FROM</div>
+            <div style="display:flex;gap:3px">
+              <sc-for list="{{ cmpA }}" as="c" hint-placeholder-count="10">
+                <button onClick="{{ c.onClick }}" style="flex:1;height:36px;border-radius:9px;text-align:center;font:500 10px 'IBM Plex Mono',monospace;background:{{ c.bg }};color:{{ c.color }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.80 0.11 230);padding-top:6px">TO</div>
+            <div style="display:flex;gap:3px">
+              <sc-for list="{{ cmpB }}" as="c" hint-placeholder-count="10">
+                <button onClick="{{ c.onClick }}" style="flex:1;height:36px;border-radius:9px;text-align:center;font:500 10px 'IBM Plex Mono',monospace;background:{{ c.bg }};color:{{ c.color }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:8px 14px">
+            <sc-for list="{{ cmpRows }}" as="r" hint-placeholder-count="10">
+              <div style="display:flex;flex-direction:column;gap:6px;padding:10px 0;border-bottom:1px solid oklch(0.28 0.03 255)">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+                  <span style="font-size:13px;font-weight:500">{{ r.label }}</span>
+                  <span style="font:600 12px 'IBM Plex Mono',monospace;color:{{ r.color }}">{{ r.chg }}</span>
+                </div>
+                <div style="position:relative;height:8px;background:oklch(0.28 0.03 255);border-radius:4px">
+                  <div style="position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:oklch(0.55 0.02 245)"></div>
+                  <div style="position:absolute;top:0;bottom:0;border-radius:4px;left:{{ r.left }};width:{{ r.w }};background:{{ r.color }};transition:all .35s"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">
+                  <span>{{ r.a }}</span><span>{{ r.b }}</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ askCompare }}" style="padding:14px;border-radius:16px;background:oklch(0.82 0.14 165);color:oklch(0.17 0.03 255);font-size:14px;font-weight:600;text-align:center">Ask Aurora what changed →</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isWhatIf }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:6px 20px 28px;display:flex;flex-direction:column;gap:14px">
+          <button onClick="{{ goBack }}" style="align-self:flex-start;font-size:15px;color:oklch(0.80 0.11 230);padding:8px 0;min-height:44px">‹ {{ backName }}</button>
+          <div style="display:flex;flex-direction:column;gap:4px"><div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">SCENARIO SIMULATOR</div><div style="font-size:30px;font-weight:600;letter-spacing:-0.03em;line-height:1.1">What if…</div><div style="font-size:14px;line-height:1.45;color:oklch(0.72 0.02 245);text-wrap:pretty">Move the levers for a simplified estimate of oil revenue, the dividend and the budget gap.</div></div>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ wiSliders }}" as="sl" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column;gap:4px;padding:4px 0">
+                <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:14px;font-weight:500">{{ sl.label }}</span><span style="font:600 14px 'IBM Plex Mono',monospace;color:oklch(0.78 0.12 40)">{{ sl.val }}</span></div>
+                <input type="range" min="{{ sl.min }}" max="{{ sl.max }}" step="{{ sl.step }}" value="{{ sl.v }}" onChange="{{ sl.onChange }}" style="width:100%;accent-color:oklch(0.78 0.12 40);height:28px;margin:0">
+                <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)"><span>{{ sl.lo }}</span><span>{{ sl.hint }}</span><span>{{ sl.hi }}</span></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <sc-for list="{{ wiOut }}" as="o" hint-placeholder-count="3">
+              <div style="background:oklch(0.22 0.03 255);border-radius:16px;padding:12px 10px;display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font:500 10px 'IBM Plex Mono',monospace;font-size:9px;color:oklch(0.72 0.02 245)">{{ o.label }}</span><span style="font-size:18px;font-weight:600;color:{{ o.c }};white-space:nowrap">{{ o.v }}</span><span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">{{ o.sub }}</span></div>
+            </sc-for>
+          </div>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+            <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">GENERAL FUND · REVENUE VS SPENDING</div>
+            <div style="position:relative;height:34px;border-radius:8px;background:oklch(0.28 0.03 255);display:flex;margin:6px 0">
+              <sc-for list="{{ wiSegs }}" as="sg" hint-placeholder-count="3"><div style="height:100%;width:{{ sg.w }};background:{{ sg.c }};transition:width .2s"></div></sc-for>
+              <div style="position:absolute;top:-6px;bottom:-6px;width:3px;border-radius:2px;left:{{ wiSpendX }};background:oklch(0.96 0.01 240)"></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px 12px"><sc-for list="{{ wiSegs }}" as="sg" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:5px;font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.85 0.01 245)"><div style="width:8px;height:8px;border-radius:2px;background:{{ sg.c }}"></div>{{ sg.label }} {{ sg.val }}</div></sc-for></div>
+            <div style="font-size:13px;line-height:1.45;color:oklch(0.80 0.01 245);text-wrap:pretty">{{ wiNote }}</div>
+          </div>
+          <div style="display:flex;gap:8px"><button onClick="{{ wiPin }}" style="padding:14px;border-radius:16px;border:1px solid oklch(0.34 0.03 255);font-size:14px;font-weight:500;text-align:center;flex:1">☆ Pin</button><button onClick="{{ wiAsk }}" style="padding:14px;border-radius:16px;background:oklch(0.82 0.14 165);color:oklch(0.17 0.03 255);font-size:14px;font-weight:600;text-align:center;flex:2">Ask Aurora to interpret</button></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isSaved }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:6px 20px 28px;display:flex;flex-direction:column;gap:14px">
+          <button onClick="{{ goBack }}" style="align-self:flex-start;font-size:15px;color:oklch(0.80 0.11 230);padding:8px 0;min-height:44px">‹ {{ backName }}</button>
+          <div style="display:flex;flex-direction:column;gap:4px"><div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">{{ savedCount }} ITEMS · YOUR REPORT</div><div style="font-size:30px;font-weight:600;letter-spacing:-0.03em;line-height:1.1">Saved insights</div></div>
+          <sc-if value="{{ noSaved }}" hint-placeholder-val="{{ true }}"><div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px"><div style="font-size:15px;line-height:1.55;text-wrap:pretty">Nothing pinned yet. Tap ☆ Pin on any chart, story, scenario or Aurora answer to build a report.</div></div></sc-if>
+          <sc-for list="{{ savedList }}" as="sv" hint-placeholder-count="0">
+            <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.78 0.12 40)">{{ sv.kind }}</span><button onClick="{{ sv.remove }}" style="font:600 11px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245);min-height:32px">Remove ✕</button></div>
+              <div style="font-size:16px;font-weight:600;line-height:1.3">{{ sv.title }}</div>
+              <div style="font-size:13px;line-height:1.5;color:oklch(0.82 0.01 245);text-wrap:pretty;white-space:pre-wrap">{{ sv.detail }}</div>
+              <sc-if value="{{ sv.hasBars }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:flex-end;gap:3px;height:40px"><sc-for list="{{ sv.bars }}" as="b" hint-placeholder-count="10"><div style="flex:1;border-radius:3px;height:{{ b.h }};background:{{ b.bg }}"></div></sc-for></div></sc-if>
+            </div>
+          </sc-for>
+          <div style="display:flex;gap:8px"><button onClick="{{ exportReport }}" style="padding:14px;border-radius:16px;background:oklch(0.82 0.14 165);color:oklch(0.17 0.03 255);font-size:14px;font-weight:600;text-align:center;flex:1">⇩ Export report</button><button onClick="{{ exportAll }}" style="padding:14px;border-radius:16px;border:1px solid oklch(0.34 0.03 255);font-size:14px;font-weight:500;text-align:center;flex:1">⇩ All data CSV</button></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:10px 20px 28px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="font:500 11px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">BOROUGHS &amp; CENSUS AREAS</div>
+            <div style="font-size:34px;font-weight:600;letter-spacing:-0.03em">Regions</div>
+          </div>
+          <div style="display:flex;gap:4px;padding:4px;border-radius:14px;background:oklch(0.22 0.03 255)">
+            <sc-for list="{{ mapMetrics }}" as="mm" hint-placeholder-count="3">
+              <button onClick="{{ mm.onClick }}" style="flex:1;height:38px;border-radius:10px;text-align:center;font-size:12px;font-weight:600;background:{{ mm.bg }};color:{{ mm.color }}">{{ mm.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;gap:4px;padding:4px;border-radius:14px;background:oklch(0.22 0.03 255);align-self:flex-start">
+            <sc-for list="{{ mapViews }}" as="mv" hint-placeholder-count="2"><button onClick="{{ mv.onClick }}" style="height:34px;padding:0 16px;border-radius:10px;font-size:12px;font-weight:600;background:{{ mv.bg }};color:{{ mv.color }}">{{ mv.label }}</button></sc-for>
+          </div>
+          <sc-if value="{{ map3d }}" hint-placeholder-val="{{ false }}">
+            <div style="background:oklch(0.20 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:10px 8px;display:flex;flex-direction:column;gap:6px">
+              {{ mapSvg }}
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:0 6px;gap:8px">
+                <span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245);line-height:1.4">{{ map3dRead }}</span>
+                <button onClick="{{ togglePlay }}" style="height:36px;padding:0 12px;border-radius:18px;background:oklch(0.78 0.12 40);color:oklch(0.17 0.03 255);font:600 11px 'IBM Plex Mono',monospace;white-space:nowrap">{{ playIcon }}</button>
+              </div>
+            </div>
+          </sc-if>
+          <div style="display:{{ gridDisplay }};grid-template-columns:repeat(7,1fr);gap:4px">
+            <sc-for list="{{ tilesMap }}" as="t" hint-placeholder-count="18">
+              <button onClick="{{ t.onClick }}" style="grid-row:{{ t.row }};grid-column:{{ t.col }};aspect-ratio:1;border-radius:9px;display:flex;flex-direction:column;justify-content:space-between;padding:5px;background:{{ t.bg }};color:{{ t.fg }};outline:{{ t.outline }};outline-offset:1px;transition:background .3s">
+                <span style="font:600 9px 'IBM Plex Mono',monospace">{{ t.abbr }}</span>
+                <span style="font:600 10px 'IBM Plex Mono',monospace">{{ t.val }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">
+            <span>{{ legendLo }}</span><span>Tile map · not to scale</span><span>{{ legendHi }}</span>
+          </div>
+          <div style="background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <span style="font-size:20px;font-weight:600">{{ reg.name }}</span>
+              <span style="font:500 11px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">{{ reg.abbr }}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="display:flex;flex-direction:column"><span style="font-size:22px;font-weight:600">{{ reg.pop }}</span><span style="font-size:11px;color:oklch(0.72 0.02 245)">residents (2024)</span></div>
+              <div style="display:flex;flex-direction:column"><span style="font-size:22px;font-weight:600;color:{{ reg.chgColor }}">{{ reg.chg }}</span><span style="font-size:11px;color:oklch(0.72 0.02 245)">change since 2015</span></div>
+              <div style="display:flex;flex-direction:column"><span style="font-size:22px;font-weight:600;color:oklch(0.82 0.14 165)">{{ reg.native }}</span><span style="font-size:11px;color:oklch(0.72 0.02 245)">Alaska Native</span></div>
+              <div style="display:flex;flex-direction:column"><span style="font-size:22px;font-weight:600;color:oklch(0.80 0.11 230)">{{ reg.income }}</span><span style="font-size:11px;color:oklch(0.72 0.02 245)">median household income</span></div>
+            </div>
+            <button onClick="{{ askRegion }}" style="align-self:flex-start;font-size:13px;font-weight:600;color:oklch(0.82 0.14 165);padding:6px 0">Ask Aurora about {{ reg.name }} →</button>
+          </div>
+          <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245);padding-top:4px">RANKED · {{ mapTitle }}</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ ranked }}" as="r" hint-placeholder-count="18">
+              <button onClick="{{ r.onClick }}" style="display:grid;grid-template-columns:118px 1fr 52px;align-items:center;gap:8px;min-height:24px">
+                <span style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:{{ r.tc }}">{{ r.name }}</span>
+                <div style="height:10px;border-radius:5px;background:oklch(0.26 0.03 255);overflow:hidden"><div style="height:100%;border-radius:5px;width:{{ r.w }};background:{{ r.bg }};transition:width .4s"></div></div>
+                <span style="font:500 11px 'IBM Plex Mono',monospace;text-align:right;color:oklch(0.72 0.02 245)">{{ r.val }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAsk }}" hint-placeholder-val="{{ false }}">
+        <div style="min-height:100%;display:flex;flex-direction:column">
+          <div style="padding:10px 20px 8px;display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="width:10px;height:10px;border-radius:5px;background:oklch(0.82 0.14 165);box-shadow:0 0 12px oklch(0.82 0.14 165)"></div>
+              <div style="font:500 11px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">{{ aiMode }}</div>
+            </div>
+            <div style="font-size:34px;font-weight:600;letter-spacing:-0.03em">Ask Aurora</div>
+            <div style="font-size:14px;color:oklch(0.72 0.02 245);line-height:1.45">Your analyst for 17 Alaska indicators, 18 regions and 10 years of data.</div>
+          </div>
+          <div style="flex:1;padding:8px 20px 12px;display:flex;flex-direction:column;gap:12px">
+            <sc-if value="{{ noMsgs }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:8px;padding-top:8px">
+                <div style="font:500 10px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:oklch(0.72 0.02 245)">TRY ASKING</div>
+                <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="4">
+                  <button onClick="{{ s.onClick }}" style="padding:14px;border-radius:16px;background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);font-size:14px;line-height:1.4">{{ s.q }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+            <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="0">
+              <div style="display:flex;flex-direction:column;gap:6px;align-items:{{ m.align }}">
+                <div style="font:600 9px 'IBM Plex Mono',monospace;letter-spacing:0.12em;color:{{ m.tagColor }}">{{ m.tag }}</div>
+                <div style="max-width:86%;padding:12px 14px;border-radius:18px;font-size:14px;line-height:1.55;white-space:pre-wrap;text-wrap:pretty;background:{{ m.bg }};color:{{ m.fg }};border:{{ m.border }}">{{ m.text }}</div>
+                <sc-if value="{{ m.hasActions }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-wrap:wrap;gap:6px;max-width:92%">
+                    <sc-for list="{{ m.actions }}" as="ac" hint-placeholder-count="2"><button onClick="{{ ac.onClick }}" style="height:32px;padding:0 12px;border-radius:16px;border:1px solid oklch(0.82 0.14 165 / 0.5);color:oklch(0.82 0.14 165);font-size:12px;font-weight:600">{{ ac.label }}</button></sc-for>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ m.hasChart }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ m.openChart }}" style="width:86%;padding:12px 14px;border-radius:16px;background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);display:flex;flex-direction:column;gap:8px">
+                    <div style="display:flex;justify-content:space-between;font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)"><span>{{ m.chartLabel }}</span><span>OPEN ›</span></div>
+                    <div style="display:flex;align-items:flex-end;gap:3px;height:48px;width:100%">
+                      <sc-for list="{{ m.bars }}" as="b" hint-placeholder-count="10">
+                        <div style="flex:1;border-radius:3px;height:{{ b.h }};background:{{ b.bg }}"></div>
+                      </sc-for>
+                    </div>
+                  </button>
+                </sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{ busy }}" hint-placeholder-val="{{ false }}">
+              <div style="font:500 12px 'IBM Plex Mono',monospace;color:oklch(0.82 0.14 165)">Aurora is reading the numbers…</div>
+            </sc-if>
+          </div>
+          <div style="position:sticky;bottom:0;padding:10px 16px 12px;background:oklch(0.17 0.03 255);border-top:1px solid oklch(0.26 0.03 255);display:flex;gap:8px">
+            <input value="{{ input }}" onChange="{{ onInput }}" onKeyDown="{{ onKey }}" placeholder="Ask about Alaska’s data…" style="flex:1;height:46px;border-radius:23px;border:1px solid oklch(0.34 0.03 255);background:oklch(0.22 0.03 255);color:oklch(0.96 0.01 240);padding:0 16px;font-size:15px;outline:none">
+            <button onClick="{{ sendInput }}" style="width:46px;height:46px;border-radius:23px;background:oklch(0.82 0.14 165);color:oklch(0.17 0.03 255);font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center">↑</button>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:0;height:84px;background:oklch(0.15 0.03 255 / 0.96);border-top:1px solid oklch(0.26 0.03 255);display:flex;padding:0 8px 22px;box-sizing:border-box">
+      <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="5">
+        <button onClick="{{ tb.onClick }}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:{{ tb.color }}">
+          <div style="width:22px;height:3px;border-radius:2px;background:{{ tb.ind }}"></div>
+          <span style="font-size:12px;font-weight:600">{{ tb.label }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <sc-if value="{{ pointOn }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:52px;left:12px;right:12px;z-index:8;border-radius:14px;padding:10px 14px;background:oklch(0.82 0.14 165);color:oklch(0.17 0.03 255);font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.4)"><span>Point mode · tap any number, bar or tile</span><button onClick="{{ togglePoint }}" style="font-weight:700;min-height:28px;color:oklch(0.17 0.03 255)">Cancel</button></div></sc-if>
+    <sc-if value="{{ showPointBtn }}" hint-placeholder-val="{{ true }}"><button onClick="{{ togglePoint }}" style="position:absolute;right:14px;bottom:96px;z-index:8;height:44px;padding:0 16px;border-radius:22px;background:{{ pointBg }};color:{{ pointFg }};font:600 12px 'IBM Plex Mono',monospace;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.45);border:1px solid oklch(0.82 0.14 165 / 0.5);white-space:nowrap">{{ pointLabel }}</button></sc-if>
+    <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:50%;bottom:150px;transform:translateX(-50%);z-index:9;padding:10px 16px;border-radius:14px;background:oklch(0.96 0.01 240);color:oklch(0.17 0.03 255);font-size:13px;font-weight:600;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.4)">{{ toast }}</div></sc-if>
+    <sc-if value="{{ onbOn }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;inset:0;z-index:20;background:oklch(0.15 0.03 255);display:flex;flex-direction:column;padding:60px 24px 36px;gap:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 12px 'IBM Plex Mono',monospace;letter-spacing:0.14em;color:oklch(0.78 0.12 40)">ALASKA PULSE</span><button onClick="{{ onbSkip }}" style="font-size:14px;color:oklch(0.72 0.02 245);min-height:44px">Skip</button></div>
+        <div style="flex:1;display:flex;align-items:center;justify-content:center;min-height:0">
+          <sc-if value="{{ onb0 }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:flex-end;gap:6px;height:200px">
+              <sc-for list="{{ onbBars }}" as="b" hint-placeholder-count="10"><div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div style="width:20px;border-radius:5px;height:{{ b.h }};background:{{ b.bg }}"></div><span style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(0.72 0.02 245)">{{ b.y }}</span></div></sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ onb1 }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:22px;width:100%">
+              <div style="width:150px;height:150px;border-radius:75px;background:radial-gradient(circle,oklch(0.82 0.14 165 / 0.5),oklch(0.82 0.14 165 / 0) 70%);display:flex;align-items:center;justify-content:center"><div style="width:22px;height:22px;border-radius:11px;background:oklch(0.82 0.14 165);box-shadow:0 0 24px oklch(0.82 0.14 165)"></div></div>
+              <div style="align-self:stretch;padding:12px 14px;border-radius:18px;background:oklch(0.22 0.03 255);border:1px solid oklch(0.30 0.03 255);font-size:14px;line-height:1.5">2022’s record $3,284 PFD tracked an oil spike to ~$99 — plus a one-time $662 energy relief payment.</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ onb2 }}" hint-placeholder-val="{{ false }}"><div style="width:100%">{{ onbSvg }}</div></sc-if>
+        </div>
+        <div style="font-size:30px;font-weight:600;letter-spacing:-0.03em;line-height:1.1;text-wrap:pretty">{{ onbTitle }}</div>
+        <div style="font-size:15px;line-height:1.5;color:oklch(0.80 0.01 245);text-wrap:pretty">{{ onbBody }}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;gap:6px"><sc-for list="{{ onbDots }}" as="dt" hint-placeholder-count="3"><div style="width:{{ dt.w }};height:8px;border-radius:4px;background:{{ dt.c }};transition:width .25s"></div></sc-for></div>
+          <button onClick="{{ onbNext }}" style="height:52px;padding:0 24px;border-radius:26px;background:oklch(0.78 0.12 40);color:oklch(0.17 0.03 255);font-size:15px;font-weight:600">{{ onbCta }}</button>
+        </div>
+      </div>
+    </sc-if>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultYear&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:2023,&quot;min&quot;:2015,&quot;max&quot;:2024,&quot;tsType&quot;:&quot;number&quot;},&quot;startTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;story&quot;,&quot;pulse&quot;,&quot;explore&quot;,&quot;map&quot;,&quot;ask&quot;],&quot;default&quot;:&quot;story&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;liveAI&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;showOnboarding&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const Y=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024];
+const C={g:'oklch(0.82 0.14 165)',b:'oklch(0.80 0.11 230)',s:'oklch(0.78 0.12 40)',t:'oklch(0.96 0.01 240)',m:'oklch(0.72 0.02 245)',sf:'oklch(0.22 0.03 255)',ln:'oklch(0.34 0.03 255)',bg:'oklch(0.17 0.03 255)',dim:'oklch(0.36 0.03 255)'};
+const n0=v=>Math.round(v).toLocaleString();
+const M={
+  pop:{label:'Population',group:'PEOPLE',unit:'residents',v:[737.6,741.5,739.7,735.1,731.5,733.4,734.3,733.6,733.4,740.1],f:v=>n0(v*1000),up:1,c:C.s,notes:['Natural increase (births minus deaths) has kept Alaska roughly flat despite years of net out-migration.','Growth is concentrated in the Mat-Su Borough; Anchorage and many rural areas are shrinking.']},
+  netmig:{label:'Net migration',group:'PEOPLE',unit:'people',v:[-5.1,-2.8,-7.7,-9.8,-6.0,-3.5,-1.4,-3.0,-5.9,-1.0],f:v=>(v>0?'+':'')+n0(v*1000),fd:v=>n0(v*1000),up:1,c:C.s,notes:['2024 would mark the 12th straight year more people left Alaska than arrived.','Young adults and working-age families make up most of the outflow.']},
+  native:{label:'Alaska Native share',group:'PEOPLE',unit:'% of residents',v:[19.6,19.8,19.9,20.0,20.1,21.9,22.0,22.1,22.2,22.3],f:v=>v.toFixed(1)+'%',fd:v=>v.toFixed(1)+' pts',up:1,neutral:1,c:C.g,notes:['The jump in 2020 partly reflects changes in how the Census counts multiracial identity.','Alaska has the highest Indigenous share of any U.S. state.']},
+  jobs:{label:'Nonfarm jobs',group:'ECONOMY',unit:'thousand jobs',v:[342,338,333,331,333,304,315,324,330,334],f:v=>v.toFixed(0)+'k',up:1,c:C.b,notes:['The 2016–2018 recession was driven by oil-price collapse and state budget cuts.','By 2024 employment was nearly back to its 2015 level.']},
+  unemp:{label:'Unemployment',group:'ECONOMY',unit:'% of labor force',v:[6.5,6.9,7.0,6.6,6.1,8.3,6.4,4.4,4.3,4.6],f:v=>v.toFixed(1)+'%',fd:v=>v.toFixed(1)+' pts',up:0,c:C.s,notes:['Record lows in 2022–23 reflect a shrinking labor force as much as job growth.','Rural unemployment often runs 2–3× the statewide rate.']},
+  income:{label:'Median household income',group:'ECONOMY',unit:'USD',v:[73.4,74.4,73.2,74.3,75.5,77.8,77.8,86.4,86.6,89.3],f:v=>'$'+v.toFixed(1)+'k',up:1,c:C.b,notes:['Nominal figures — inflation absorbs much of the 2022 jump.','Alaska’s cost of living, especially food and energy off the road system, is among the nation’s highest.']},
+  pfd:{label:'PFD payout',group:'ECONOMY',unit:'per resident',v:[2072,1022,1100,1600,1606,992,1114,3284,1312,1702],f:v=>'$'+n0(v),up:1,c:C.g,notes:['Since 2016 the Legislature, not the statutory formula, has set the dividend amount.','2022 included a one-time $662 energy relief payment.']},
+  oil:{label:'Oil production',group:'RESOURCES',unit:'thousand barrels / day',v:[501,490,497,479,466,448,437,433,424,425],f:v=>n0(v),up:1,c:C.b,notes:['North Slope output peaked near 2 million bbl/day in 1988.','New fields like Pikka and Willow are expected to lift production later this decade.']},
+  oilprice:{label:'ANS crude price',group:'RESOURCES',unit:'USD / barrel',v:[52,43,54,71,65,42,71,99,84,81],f:v=>'$'+v,up:1,c:C.s,notes:['Oil taxes and royalties historically funded most of the state’s unrestricted budget.','Each $1 change in price moves state revenue by tens of millions.']},
+  salmon:{label:'Salmon harvest',group:'RESOURCES',unit:'million fish',v:[268,113,225,115,207,118,234,163,231,105],f:v=>n0(v),up:1,c:C.s,notes:['Pink salmon run in strong odd-year cycles, creating the sawtooth pattern.','Bristol Bay sockeye set records while Yukon chinook runs collapsed.']},
+  visitors:{label:'Visitors',group:'RESOURCES',unit:'million per year',v:[1.95,2.0,2.2,2.26,2.4,0.4,1.4,2.6,3.0,3.1],f:v=>v.toFixed(1)+'M',up:1,c:C.g,notes:['Cruise passengers account for more than half of all visitors.','2020’s cancelled cruise season cut visitor volume by roughly 80%.']},
+  temp:{label:'Temperature anomaly',group:'CLIMATE',unit:'°F vs 20th-century avg',v:[3.6,5.1,2.4,3.5,4.6,0.4,-0.2,0.9,1.0,0.7],f:v=>(v>0?'+':'')+v.toFixed(1)+'°',fd:v=>v.toFixed(1)+'°',up:0,neutral:1,c:C.s,notes:['Alaska is warming roughly twice as fast as the contiguous U.S.','2016 and 2019 were the two warmest years on record statewide.']}
+};
+Object.assign(M,{
+  home:{label:'Avg home sale price',group:'HOUSING',unit:'USD',v:[290,295,300,305,312,326,352,371,382,391],f:v=>'$'+v.toFixed(0)+'k',up:0,neutral:1,c:C.s,notes:['Prices rose roughly 20% between 2020 and 2024 as inventory tightened.','Few new homes are built each year; construction costs are among the highest in the U.S.']},
+  rent:{label:'Median rent',group:'HOUSING',unit:'USD / month',v:[1230,1240,1240,1250,1262,1285,1330,1420,1480,1530],f:v=>'$'+n0(v),up:0,c:C.s,notes:['Rents climbed fastest after 2021 as vacancy rates fell below 5% in Anchorage.','Housing cost is a leading reason cited by families leaving the state.']},
+  grad:{label:'High school graduation',group:'EDUCATION & HEALTH',unit:'% 4-year rate',v:[76.1,76.5,78.2,78.5,80.4,81.1,77.9,77.2,78.3,79.6],f:v=>v.toFixed(1)+'%',fd:v=>v.toFixed(1)+' pts',up:1,c:C.b,notes:['Rural districts trail the road system by double digits.','Pandemic disruption reversed several years of gains in 2021–22.']},
+  life:{label:'Life expectancy',group:'EDUCATION & HEALTH',unit:'years at birth',v:[78.0,77.9,77.8,78.0,78.1,76.6,74.8,75.8,77.0,77.5],f:v=>v.toFixed(1),fd:v=>v.toFixed(1)+' yrs',up:1,c:C.b,notes:['COVID-19, overdoses and injuries drove the 2020–21 drop.','Life expectancy in some rural regions is 7–9 years below Anchorage.']},
+  ice:{label:'Arctic sea ice minimum',group:'CLIMATE',unit:'million km² (Sept)',v:[4.43,4.15,4.67,4.71,4.32,3.92,4.92,4.67,4.23,4.28],f:v=>v.toFixed(2),up:1,c:C.b,notes:['The record low remains 2012 at about 3.4 million km².','Less ice means more coastal erosion and storm exposure for Arctic villages.']}
+});
+const SRC={pop:['Alaska DOLWD population estimates','Jul 2025'],netmig:['Alaska DOLWD components of change','Jul 2025'],native:['U.S. Census ACS / DOLWD','Sep 2025'],jobs:['DOLWD Current Employment Statistics','Mar 2025'],unemp:['BLS Local Area Unemployment Statistics','Mar 2025'],income:['Census ACS 1-year','Sep 2025'],pfd:['Permanent Fund Dividend Division','Oct 2024'],oil:['Alaska Dept. of Revenue','Dec 2024'],oilprice:['Alaska Dept. of Revenue','Dec 2024'],salmon:['ADF&G Commercial Fisheries','Jan 2025'],visitors:['Alaska Visitor Statistics Program','Apr 2025'],temp:['NOAA NCEI Climate at a Glance','Jan 2025'],home:['AHFC Housing Market Indicators','Mar 2025'],rent:['AHFC / DOLWD Rental Market Survey','Jun 2025'],grad:['Alaska DEED','Dec 2024'],life:['Alaska DOH Vital Statistics','Feb 2025'],ice:['NSIDC Sea Ice Index','Sep 2024']};
+Object.keys(SRC).forEach(k=>{M[k].src=SRC[k]});
+const STATS={};Object.keys(M).forEach(k=>{const v=M[k].v,ds=v.slice(1).map((x,i)=>x-v[i]),mu=ds.reduce((a,b)=>a+b,0)/ds.length,sd=Math.sqrt(ds.reduce((a,b)=>a+(b-mu)*(b-mu),0)/ds.length)||1;STATS[k]=v.map((x,i)=>i?(x-v[i-1]-mu)/sd:0)});
+const FLAGS={};Object.keys(M).forEach(k=>{FLAGS[k]=STATS[k].map(z=>Math.abs(z)>1.5)});
+function anomsFor(yi){if(!yi)return[];return Object.keys(M).map(k=>({k,z:STATS[k][yi],dd:M[k].v[yi]-M[k].v[yi-1]})).filter(a=>Math.abs(a.z)>1.5).sort((a,b)=>Math.abs(b.z)-Math.abs(a.z)).slice(0,4)}
+const AGES=['0–17','18–24','25–34','35–44','45–54','55–64','65+'],A15=[25.0,10.4,15.6,12.7,13.3,13.0,10.0],A24=[23.4,8.8,14.4,14.0,11.3,12.6,15.5],AHUE=[230,210,190,165,120,70,40];
+const BUDGET=[{label:'Oil',c:'oklch(0.78 0.12 40)',v:[1.9,1.0,1.2,1.7,1.5,1.0,0.9,2.6,2.0,1.6]},{label:'Permanent Fund',c:'oklch(0.80 0.11 230)',v:[0,0,0,0,2.7,2.9,3.1,3.1,3.4,3.5]},{label:'Savings draw',c:'oklch(0.72 0.10 290)',v:[3.0,3.2,2.6,1.0,0.2,0.4,0.3,0,0,0.1]},{label:'Other',c:'oklch(0.60 0.02 245)',v:[0.4,0.4,0.4,0.5,0.5,0.5,0.5,0.6,0.6,0.6]}];
+const SALMONR=[['Bristol Bay sockeye',[36,38,38,41,43,40,40,60,49,39],'M'],['Prince William Sd. pink',[98,22,77,26,64,40,63,57,90,20],'M'],['Southeast pink',[35,18,37,8,21,8,48,18,49,18],'M'],['Kodiak, all species',[40,20,45,15,35,30,40,20,35,15],'M'],['Cook Inlet sockeye',[1.8,2.4,2.0,1.0,1.4,0.6,1.0,1.1,1.6,1.3],'M'],['Yukon chinook',[2.0,1.8,2.5,1.4,1.6,0,0,0,0,0],'k']];
+const STR=[];for(let y=1975;y<=2024;y++){const i=y-2015;STR.push({y,v:i>=0?M.temp.v[i]:(-1.4+(y-1975)*0.075+1.6*Math.sin(y*1.7)+0.9*Math.sin(y*0.53))})}
+function stripe(v){const t=Math.max(-1,Math.min(1,v/4.5)),a=Math.abs(t);return 'oklch('+(0.80-0.32*a).toFixed(3)+' '+(0.03+0.15*a).toFixed(3)+' '+(t<0?250:30)+')'}
+const FOOD=[['Anchorage',290],['Fairbanks',305],['Juneau',310],['Kodiak',380],['Bethel',480],['Nome',510],['Utqiaġvik',640]];
+const SUBS=[['Western',510],['Arctic',420],['Southwest',380],['Interior',300],['Southcentral',160],['Southeast',145]];
+const GAPS=[['High school graduation','%',82,68],['Life expectancy',' yrs',79.2,71.5],['Household broadband','%',92,61],['Median household income','k',95,58]];
+function hlc(v,mk,vmin,vmax){let t,hh;if(mk==='chg'){t=Math.min(Math.abs(v)/15,1);hh=v>=0?165:40}else{t=(v-vmin)/(vmax-vmin||1);hh=mk==='native'?165:230}return{L:0.45+0.42*t,C:0.04+0.11*t,h:hh}}
+function drawBoxes(E,boxes,P,kids,bw,bd){boxes.sort((a,b)=>a.d-b.d).forEach(bx=>{const w=bx.bw||bw,dd=bx.bd||bd,c=[[bx.x-w,bx.z-dd],[bx.x+w,bx.z-dd],[bx.x+w,bx.z+dd],[bx.x-w,bx.z+dd]],B=c.map(([a,b])=>P(a,0,b)),T=c.map(([a,b])=>P(a,bx.hh,b));
+  const col=bx.col||(L=>bx.on?'oklch('+L+' 0.14 '+bx.hue+')':'oklch('+(L*0.62).toFixed(3)+' 0.05 '+bx.hue+')');
+  const sides=[[[B[0],B[1],T[1],T[0]],0.52],[[B[1],B[2],T[2],T[1]],0.66],[[B[2],B[3],T[3],T[2]],0.52],[[B[3],B[0],T[0],T[3]],0.66]].map(([f,L])=>({f,L,d:f.reduce((s,p)=>s+p[2],0)/4})).sort((a,b)=>a.d-b.d);
+  sides.forEach((sd,j)=>kids.push(E('polygon',{key:bx.id+'s'+j,points:pts2(sd.f),fill:col(sd.L),onClick:bx.onClick})));
+  kids.push(E('polygon',{key:bx.id+'t',points:pts2(T),fill:col(0.86),stroke:bx.stroke||'none',strokeWidth:bx.stroke?1.5:0,onClick:bx.onClick}))})}
+const OB=[['Ten years of Alaska, one swipe','Scrub from 2015 to 2024 and every chart, map and number updates — people, economy, resources, culture and climate.'],['Meet Aurora, your AI analyst','Aurora writes the story of each year, explains any chart, flags unusual moves, and answers questions in plain language.'],['Charts in 3D — and 4D','Drag any 3D chart to rotate it. Press Play and it flows through time. Tap ◎ Point & ask, then tap any number to ask about it.']];
+const NARR=['Oil prices collapsed to about $52, opening a multibillion-dollar budget gap. Still, population peaked near 738k, the PFD paid $2,072, and a run of record-warm years began.','Alaska’s warmest year on record (+5.1°F). Recession set in: jobs fell, unemployment hit 6.9%, and the PFD was cut roughly in half to $1,022. The salmon harvest crashed to 113M fish.','The recession deepened. Net out-migration reached ~7.7k as jobs slid to 333k. Oil output briefly ticked up and the salmon harvest rebounded to 225M.','A fourth straight year of population loss, with out-migration peaking near 9.8k. Oil recovered to ~$71, and Permanent Fund earnings formally began funding state government.','The recession ended as jobs stabilized. A July heat wave brought Anchorage its first 90°F day, and tourism hit a then-record ~2.4M visitors.','The pandemic erased the cruise season — visitors fell ~80%. Unemployment spiked to 8.3% and oil sank to $42. The Census counted 733,391 Alaskans.','Partial recovery. Independent travelers returned, jobs rebuilt to 315k, and net migration came closest to even in a decade. Salmon rebounded to 234M.','Oil spiked near $99, funding a record $3,284 PFD including energy relief. Unemployment fell to a historic low of 4.4% in a very tight labor market.','Cruise tourism set records and visitors topped ~3M. Unemployment hit a new low of 4.3%, but out-migration (~5.9k) resumed as housing and childcare costs squeezed families.','Population ticked up to ~740k on international arrivals. Oil output held steady as Pikka and Willow advanced, while the salmon harvest fell to ~105M.'];
+const GROUPS=[['PEOPLE',['pop','netmig','native']],['ECONOMY',['jobs','unemp','income','pfd']],['HOUSING',['home','rent']],['RESOURCES',['oil','oilprice','salmon','visitors']],['EDUCATION & HEALTH',['grad','life']],['CLIMATE',['temp','ice']]];
+const LANGS=[['Central Yup’ik',10000],['Iñupiaq',2100],['Siberian Yupik',1000],['Gwich’in',300],['Koyukon',150],['Tlingit',100],['Haida',10],['Eyak',0]];
+const REG=[
+ ['NWA','Northwest Arctic',0,2,7.5,-3,82,76],['NSB','North Slope',0,3,10.9,2,50,95],
+ ['NOM','Nome',1,1,10.0,1,74,68],['YKK','Yukon-Koyukuk',1,2,5.2,-8,72,45],['FBK','Fairbanks',1,3,95.6,-3,9,82],['SEF','SE Fairbanks',1,4,6.8,-2,13,70],
+ ['KUS','Kusilvak',2,1,8.4,6,94,38],['BET','Bethel',2,2,18.6,4,85,62],['MSU','Mat-Su',2,3,117,15,7,92],['CRC','Copper River',2,4,9.4,-3,16,80],['JNU','Juneau',2,5,31.6,-3,11,99],
+ ['DIL','Bristol Bay',3,1,4.9,-2,70,60],['KEN','Kenai',3,2,62.5,7,9,76],['ANC','Anchorage',3,3,286,-4,9,98],['SIT','Sitka',3,5,8.4,-5,16,85],['KTN','Ketchikan',3,6,13.7,0,15,80],
+ ['ALE','Aleutians',4,0,7.7,-5,30,75],['KOD','Kodiak',4,2,12.7,-8,13,84]
+].map(r=>({abbr:r[0],name:r[1],row:r[2]+1,col:r[3]+1,pop:r[4],chg:r[5],native:r[6],income:r[7]}));
+const MAPM={chg:{label:'Change',title:'POPULATION CHANGE 2015–24',f:v=>(v>0?'+':'')+v+'%'},native:{label:'Native share',title:'ALASKA NATIVE SHARE',f:v=>v+'%'},income:{label:'Income',title:'MEDIAN HOUSEHOLD INCOME',f:v=>'$'+v+'k'}};
+const KW=[['migra','netmig'],['leav','netmig'],['native','native'],['indigen','native'],['unemploy','unemp'],['job','jobs'],['employ','jobs'],['income','income'],['wage','income'],['pfd','pfd'],['dividend','pfd'],['price','oilprice'],['oil','oil'],['barrel','oil'],['salmon','salmon'],['fish','salmon'],['touris','visitors'],['visitor','visitors'],['cruise','visitors'],['climate','temp'],['temp','temp'],['warm','temp'],['popul','pop'],['people','pop']];
+KW.unshift(['rent','rent'],['hous','home'],['home','home'],['graduat','grad'],['school','grad'],['educat','grad'],['life expect','life'],['health','life'],['sea ice','ice'],['ice','ice']);
+const detect=q=>{q=q.toLowerCase();const out=[];KW.forEach(([w,k])=>{if(q.includes(w)&&!out.includes(k))out.push(k)});return out};
+function bars(k,yi,on){const v=M[k].v,lo0=Math.min(...v),hi=Math.max(...v),lo=lo0<=0?lo0:lo0-(hi-lo0)*0.6,r=hi-lo||1;return v.map((x,i)=>({h:(12+88*(x-lo)/r).toFixed(1)+'%',bg:i===yi?(on||M[k].c):C.dim}))}
+function delta(k,yi){const m=M[k];if(yi===0)return{text:'baseline year',color:C.m};const d=m.v[yi]-m.v[yi-1];const fd=m.fd||m.f;const good=m.up?d>0:d<0;return{text:(d>=0?'▲ ':'▼ ')+fd(Math.abs(d))+' vs '+(Y[yi]-1),color:m.neutral||d===0?C.m:(good?C.g:C.s)}}
+const FIELD=['pop','jobs','oil','salmon','visitors','pfd'],FLAB=['POP','JOBS','OIL','SALMON','VISIT','PFD'],FHUE=[40,230,280,165,95,330];
+function proj(x,y,z,th,ph,s,cx,cy){const c=Math.cos(th),sn=Math.sin(th),xr=x*c-z*sn,zr=x*sn+z*c,cp=Math.cos(ph),sp=Math.sin(ph);return[cx+xr*s,cy-(y*cp-zr*sp)*s,y*sp+zr*cp]}
+const iv=(k,t)=>{const v=M[k].v,tt=Math.max(0,Math.min(9,t)),f=Math.floor(tt),c=Math.min(9,f+1);return v[f]+(v[c]-v[f])*(tt-f)};
+const pts2=a=>a.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+const DATA=Object.values(M).map(m=>m.label+' ('+m.unit+'): '+Y.map((y,i)=>y+'='+m.v[i]).join(', ')).join('\n')+'\nRegions (abbr,name,pop k 2024,% change since 2015,% Alaska Native,median income $k):\n'+REG.map(r=>[r.name,r.pop,r.chg,r.native,r.income].join(',')).join('\n')+'\nYear summaries:\n'+Y.map((y,i)=>y+': '+NARR[i]).join('\n');
+
+class Component extends DCLogic {
+  state={saved:[],point:false,onb:null,wi:{price:81,prod:425,share:25},cmpMode:'years',ra:'ANC',rb:'BET',map3d:false,toast:null,sort:null,back:null,light:null,ya:null,t:null,th:-0.65,playing:false,story:{},storyBusy:false,tab:null,year:null,topic:'pop',from:'explore',ca:0,cb:9,mapM:'chg',reg:'ANC',msgs:[],input:'',busy:false,explain:{},explainBusy:false};
+  scrollRef=React.createRef();
+  componentDidUpdate(pp,ps){const el=this.scrollRef.current;if(!el)return;if(ps.tab!==this.state.tab||ps.topic!==this.state.topic&&this.state.tab==='topic')el.scrollTop=0;if((ps.msgs!==this.state.msgs||ps.busy!==this.state.busy)&&this.tab()==='ask')el.scrollTop=el.scrollHeight}
+  tab(){return this.state.tab??(this.props.startTab??'story')}
+  yi(){const y=this.state.year??(this.props.defaultYear??2023);return Math.max(0,Math.min(9,Y.indexOf(y)<0?8:Y.indexOf(y)))}
+  setYi(i){i=Math.max(0,Math.min(9,i));this.setState({year:Y[i],t:i,playing:false})}
+  componentDidMount(){try{if(this.props.showOnboarding!==false&&!localStorage.getItem('akpulse-onb'))this.setState({onb:0})}catch(e){}let last=performance.now();const tick=now=>{const dt=Math.min(0.05,(now-last)/1000);last=now;const tb=this.tab();if(this.state.playing&&(tb==='story'||tb==='map')){let t=(this.state.t??this.yi())+dt*0.8;if(t>=10)t=0;this.setState({t,th:this.state.th+dt*0.25,year:Y[Math.min(9,Math.floor(t))]})}{const s=this.state,tg=this.yi(),ya=s.ya??tg;if(!s.playing&&Math.abs(ya-tg)>0.003)this.setState({ya:Math.abs(ya-tg)<0.01?tg:ya+(tg-ya)*Math.min(1,dt*9)});else if(s.playing&&s.ya!==s.t)this.setState({ya:s.t})}this.raf=requestAnimationFrame(tick)};this.raf=requestAnimationFrame(tick)}
+  componentWillUnmount(){cancelAnimationFrame(this.raf)}
+  pd=e=>{this.drag={x:e.clientX,a:this.state.th};try{e.currentTarget.setPointerCapture(e.pointerId)}catch(_){}};
+  pm=e=>{if(this.drag)this.setState({th:this.drag.a+(e.clientX-this.drag.x)*0.012})};
+  pu=()=>{this.drag=null};
+  togglePlay(){const yi=this.yi();if(this.state.playing)this.setState({playing:false,t:Math.min(9,Math.floor(this.state.t??yi))});else{const t=this.state.t??yi;this.setState({playing:true,t:t>=9?0:t})}}
+  async rewrite(){const yi=this.yi(),y=Y[yi];if(this.state.storyBusy)return;this.setState({storyBusy:true});
+    const p='You are Aurora, the AI narrator of an Alaska data app. Write a vivid but strictly factual 3-sentence lead (under 70 words, plain text) for the story of Alaska in '+y+', citing 3-4 specific numbers.\nDATA:\n'+DATA;
+    const text=await this.ai(p,'',[]);const clean=text.startsWith('Here')?NARR[yi]:text;this.setState(s=>({storyBusy:false,story:{...s.story,[y]:clean}}))}
+  svgBase(children){return React.createElement('svg',{viewBox:'0 0 350 250',width:'100%',style:{display:'block',touchAction:'none',cursor:'grab',userSelect:'none'},onPointerDown:this.pd,onPointerMove:this.pm,onPointerUp:this.pu,onPointerCancel:this.pu},...children)}
+  field(t,th){const E=React.createElement,ph=0.52,s=92,cx=175,cy=150,P=(x,y,z)=>proj(x,y,z,th,ph,s,cx,cy),cur=Math.min(9,Math.floor(t)),kids=[];
+    const fl=[[-1.12,-0.92],[1.12,-0.92],[1.12,0.92],[-1.12,0.92]].map(([x,z])=>P(x,0,z));
+    kids.push(E('polygon',{key:'fl',points:pts2(fl),fill:'oklch(0.24 0.03 255)',stroke:'oklch(0.34 0.03 255)'}));
+    for(let i=0;i<10;i++){const a=P(-1+i*2/9,0,-0.92),b=P(-1+i*2/9,0,0.92);kids.push(E('line',{key:'gl'+i,x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'oklch(0.30 0.03 255)'}))}
+    const boxes=[];const bw=0.07,bd=0.1;
+    FIELD.forEach((k,zi)=>{const v=M[k].v,mn=Math.min(...v),mx=Math.max(...v),hue=FHUE[zi];v.forEach((x0,xi)=>{const g=Math.max(0,Math.min(1,t-xi+1));if(g<=0.01)return;const hh=(0.1+0.9*(x0-mn)/(mx-mn||1))*0.95*g;const x=-1+xi*2/9,z=-0.75+zi*0.3;boxes.push({x,z,hh,hue,on:xi===cur,d:P(x,hh/2,z)[2],id:k+xi})})});
+    boxes.sort((a,b)=>a.d-b.d).forEach(bx=>{const c=[[bx.x-bw,bx.z-bd],[bx.x+bw,bx.z-bd],[bx.x+bw,bx.z+bd],[bx.x-bw,bx.z+bd]],B=c.map(([a,b])=>P(a,0,b)),T=c.map(([a,b])=>P(a,bx.hh,b));
+      const col=L=>bx.on?`oklch(${L} 0.14 ${bx.hue})`:`oklch(${(L*0.62).toFixed(3)} 0.05 ${bx.hue})`;
+      const sides=[[[B[0],B[1],T[1],T[0]],0.52],[[B[1],B[2],T[2],T[1]],0.66],[[B[2],B[3],T[3],T[2]],0.52],[[B[3],B[0],T[0],T[3]],0.66]].map(([f,L])=>({f,L,d:f.reduce((s2,p)=>s2+p[2],0)/4})).sort((a,b)=>a.d-b.d);
+      sides.forEach((sd,j)=>kids.push(E('polygon',{key:bx.id+'s'+j,points:pts2(sd.f),fill:col(sd.L)})));
+      kids.push(E('polygon',{key:bx.id+'t',points:pts2(T),fill:col(0.86)}))});
+    FIELD.forEach((k,zi)=>{const p=P(1.2,0,-0.75+zi*0.3);kids.push(E('text',{key:'fz'+zi,x:p[0],y:p[1]+3,fill:`oklch(0.80 0.12 ${FHUE[zi]})`,fontFamily:'IBM Plex Mono',fontSize:9,fontWeight:600,textAnchor:p[0]<cx?'end':'start'},FLAB[zi]))});
+    Y.forEach((y,i)=>{if(i%3&&i!==9)return;const p=P(-1+i*2/9,0,1.1);kids.push(E('text',{key:'fy'+i,x:p[0],y:p[1]+8,fill:i===cur?'oklch(0.96 0.01 240)':'oklch(0.60 0.02 245)',fontFamily:'IBM Plex Mono',fontSize:9,textAnchor:'middle'},"'"+String(y).slice(2)))});
+    return this.svgBase(kids)}
+  traj(t,th){const E=React.createElement,ph=0.42,s=88,cx=175,cy=128,P=(x,y,z)=>proj(x,y,z,th+0.5,ph,s,cx,cy),kids=[];
+    const nm=(k,v)=>{const a=M[k].v,mn=Math.min(...a),mx=Math.max(...a);return -0.8+1.6*(v-mn)/(mx-mn||1)};
+    const at=tt=>[nm('oilprice',iv('oilprice',tt)),nm('pfd',iv('pfd',tt)),nm('jobs',iv('jobs',tt))];
+    const q=0.9,cs=[];for(const x of[-q,q])for(const y of[-q,q])for(const z of[-q,q])cs.push([x,y,z]);
+    cs.forEach((a,i)=>cs.forEach((b,j)=>{if(j<=i)return;const diff=a.filter((v,n)=>v!==b[n]).length;if(diff!==1)return;const A=P(...a),B=P(...b);kids.push(E('line',{key:'e'+i+'-'+j,x1:A[0],y1:A[1],x2:B[0],y2:B[1],stroke:a[1]===-q&&b[1]===-q?'oklch(0.36 0.03 255)':'oklch(0.28 0.03 255)'}))}));
+    const tt=Math.min(9,t),steps=[];for(let u=0;u<=90;u++)steps.push(u/10);
+    const past=steps.filter(u=>u<=tt).concat([tt]),fut=[tt].concat(steps.filter(u=>u>tt));
+    kids.push(E('polyline',{key:'sh',points:pts2(past.map(u=>{const p=at(u);return P(p[0],-q,p[2])})),fill:'none',stroke:'oklch(0.78 0.12 40 / 0.3)',strokeWidth:2}));
+    kids.push(E('polyline',{key:'fu',points:pts2(fut.map(u=>P(...at(u)))),fill:'none',stroke:'oklch(0.60 0.02 245 / 0.5)',strokeWidth:1.2,strokeDasharray:'3 4'}));
+    kids.push(E('polyline',{key:'pa',points:pts2(past.map(u=>P(...at(u)))),fill:'none',stroke:'oklch(0.78 0.12 40)',strokeWidth:2.6,strokeLinejoin:'round',strokeLinecap:'round'}));
+    Y.forEach((y,i)=>{const p=P(...at(i)),done=i<=tt;kids.push(E('circle',{key:'d'+i,cx:p[0],cy:p[1],r:2.6,fill:done?'oklch(0.78 0.12 40)':'oklch(0.45 0.02 245)'}));kids.push(E('text',{key:'dt'+i,x:p[0]+5,y:p[1]-4,fill:done?'oklch(0.90 0.01 240)':'oklch(0.50 0.02 245)',fontFamily:'IBM Plex Mono',fontSize:8},"'"+String(y).slice(2)))});
+    const c=at(tt),C1=P(...c),F1=P(c[0],-q,c[2]);
+    kids.push(E('line',{key:'dl',x1:C1[0],y1:C1[1],x2:F1[0],y2:F1[1],stroke:'oklch(0.96 0.01 240 / 0.5)',strokeDasharray:'2 3'}));
+    kids.push(E('circle',{key:'cg',cx:C1[0],cy:C1[1],r:11,fill:'oklch(0.78 0.12 40 / 0.22)'}));
+    kids.push(E('circle',{key:'cc',cx:C1[0],cy:C1[1],r:5.5,fill:'oklch(0.96 0.01 240)',stroke:'oklch(0.78 0.12 40)',strokeWidth:2.5}));
+    [['OIL $ →',[q+0.08,-q,q]],['PFD ↑',[-q,q+0.12,q]],['JOBS →',[q,-q,-q-0.1]]].forEach(([l,p],i)=>{const a=P(...p);kids.push(E('text',{key:'ax'+i,x:a[0],y:a[1],fill:'oklch(0.72 0.02 245)',fontFamily:'IBM Plex Mono',fontSize:9,fontWeight:600,textAnchor:'middle'},l))});
+    return this.svgBase(kids)}
+  tap(label,val,fn){return()=>{if(this.state.point){this.setState({point:false});this.send('Explain this number: '+label+' = '+val+'. What is behind it, and is it unusual?')}else if(fn)fn()}}
+  pin(it){const ex=this.state.saved.find(s=>s.title===it.title);if(ex){this.setState({saved:this.state.saved.filter(s=>s!==ex)});this.toastMsg('Removed from report')}else{this.setState({saved:[...this.state.saved,{...it,id:Date.now()+Math.random()}]});this.toastMsg('Pinned to report ★')}}
+  isPinned(t){return this.state.saved.some(s=>s.title===t)}
+  toastMsg(m){this.setState({toast:m});clearTimeout(this._tt);this._tt=setTimeout(()=>this.setState({toast:null}),1600)}
+  download(name,text,type){try{const b=new Blob([text],{type});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();a.remove();this.toastMsg('Downloaded '+name)}catch(e){this.toastMsg('Export unavailable here')}}
+  csv(keys){const head=['year',...keys.map(k=>'"'+M[k].label+' ('+M[k].unit+')"')].join(',');const rows=Y.map((y,i)=>[y,...keys.map(k=>M[k].v[i])].join(','));this.download(keys.length>1?'alaska-pulse-all.csv':'alaska-'+keys[0]+'.csv',[head,...rows].join('\n'),'text/csv')}
+  exportReport(){const s=this.state.saved;if(!s.length){this.toastMsg('Pin something first');return}const esc=x=>String(x).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));const html='<!doctype html><meta charset="utf-8"><title>Alaska Pulse report</title><body style="font-family:system-ui;max-width:680px;margin:40px auto;line-height:1.5"><h1>Alaska Pulse — saved insights</h1>'+s.map(x=>'<h3>'+esc(x.kind)+' · '+esc(x.title)+'</h3><p>'+esc(x.detail)+'</p>').join('')+'<p style="color:#777">Figures approximate. Generated '+new Date().toLocaleDateString()+'. Print this page to save as PDF.</p></body>';this.download('alaska-pulse-report.html',html,'text/html')}
+  frows(){return FIELD.map((k,i)=>({label:FLAB[i],hue:FHUE[i],v:M[k].v}))}
+  field2(rows,t,th,global){const E=React.createElement,ph=0.52,s=92,cx=175,cy=150,P=(x,y,z)=>proj(x,y,z,th,ph,s,cx,cy),cur=Math.min(9,Math.floor(t)),kids=[],n=rows.length,zs=1.5/(n-1),bw=0.07,bd=Math.min(0.1,zs*0.36);
+    const fl=[[-1.12,-0.92],[1.12,-0.92],[1.12,0.92],[-1.12,0.92]].map(([x,z])=>P(x,0,z));
+    kids.push(E('polygon',{key:'fl',points:pts2(fl),fill:'oklch(0.24 0.03 255)',stroke:'oklch(0.34 0.03 255)'}));
+    for(let i=0;i<10;i++){const a=P(-1+i*2/9,0,-0.92),b=P(-1+i*2/9,0,0.92);kids.push(E('line',{key:'gl'+i,x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:'oklch(0.30 0.03 255)'}))}
+    let gmx=0;rows.forEach(r=>r.v.forEach(x=>{gmx=Math.max(gmx,x)}));
+    const boxes=[];
+    rows.forEach((row,zi)=>{const mn=Math.min(...row.v),mx=Math.max(...row.v);row.v.forEach((x0,xi)=>{const g=Math.max(0,Math.min(1,t-xi+1));if(g<=0.01)return;const nv=global?x0/gmx:0.1+0.9*(x0-mn)/(mx-mn||1);const hh=nv*0.95*g,x=-1+xi*2/9,z=-0.75+zi*zs;boxes.push({x,z,hh,hue:row.hue,on:xi===cur,d:P(x,hh/2,z)[2],id:zi+'_'+xi})})});
+    drawBoxes(E,boxes,P,kids,bw,bd);
+    rows.forEach((row,zi)=>{const p=P(1.2,0,-0.75+zi*zs);kids.push(E('text',{key:'fz'+zi,x:p[0],y:p[1]+3,fill:'oklch(0.80 0.12 '+row.hue+')',fontFamily:'IBM Plex Mono',fontSize:9,fontWeight:600,textAnchor:p[0]<cx?'end':'start'},row.label))});
+    Y.forEach((y,i)=>{if(i%3&&i!==9)return;const p=P(-1+i*2/9,0,1.1);kids.push(E('text',{key:'fy'+i,x:p[0],y:p[1]+8,fill:i===cur?'oklch(0.96 0.01 240)':'oklch(0.60 0.02 245)',fontFamily:'IBM Plex Mono',fontSize:9,textAnchor:'middle'},"'"+String(y).slice(2)))});
+    return this.svgBase(kids)}
+  map3d(t,th){const E=React.createElement,P=(x,y,z)=>proj(x,y,z,th,0.62,128,175,130),kids=[],st=this.state,mk=st.mapM,tt=Math.min(9,t);
+    const vals=REG.map(r=>r[mk]),vmin=Math.min(...vals),vmax=Math.max(...vals);
+    const fl=[[-1.2,-0.9],[1.2,-0.9],[1.2,0.9],[-1.2,0.9]].map(([x,z])=>P(x,0,z));
+    kids.push(E('polygon',{key:'fl',points:pts2(fl),fill:'oklch(0.24 0.03 255)',stroke:'oklch(0.34 0.03 255)'}));
+    const boxes=REG.map(r=>{const p0=r.pop/(1+r.chg/100),pt=p0*(1+(r.chg/100)*tt/9),hh=0.05+0.95*Math.sqrt(pt/300),x=(r.col-4)*0.32,z=(r.row-3)*0.36,c=hlc(r[mk],mk,vmin,vmax),sel=r.abbr===st.reg;return{x,z,hh,id:r.abbr,bw:0.13,bd:0.15,d:P(x,hh/2,z)[2],stroke:sel?'oklch(0.96 0.01 240)':null,col:L=>'oklch('+(c.L*(0.55+0.45*L/0.86)).toFixed(3)+' '+c.C.toFixed(3)+' '+c.h+')',onClick:this.tap(r.name+' · '+MAPM[mk].label,MAPM[mk].f(r[mk]),()=>this.setState({reg:r.abbr})),r,pt}});
+    drawBoxes(E,boxes,P,kids,0.13,0.15);
+    boxes.filter(b=>b.pt>25||b.r.abbr===st.reg).forEach(b=>{const p=P(b.x,b.hh+0.06,b.z);kids.push(E('text',{key:'l'+b.id,x:p[0],y:p[1],fill:'oklch(0.96 0.01 240)',fontFamily:'IBM Plex Mono',fontSize:9,fontWeight:600,textAnchor:'middle',style:{pointerEvents:'none'}},b.id))});
+    return this.svgBase(kids)}
+  ribbon(yi){const E=React.createElement,W=326,H=150,kids=[],tot=Y.map((_,i)=>BUDGET.reduce((s,b)=>s+b.v[i],0)),mx=Math.max(...tot)*1.12,X=i=>10+i*(306/9),Yv=v=>H-16-(v/mx)*(H-26);
+    let base=Y.map(()=>0);
+    BUDGET.forEach((b,bi)=>{const top=base.map((x,i)=>x+b.v[i]);const d='M'+top.map((v,i)=>X(i).toFixed(1)+' '+Yv(v).toFixed(1)).join(' L')+' L'+base.map((v,i)=>[X(i),Yv(v)]).reverse().map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' L')+' Z';kids.push(E('path',{key:'r'+bi,d,fill:b.c,opacity:0.92}));base=top});
+    kids.push(E('line',{key:'hl',x1:X(yi),x2:X(yi),y1:4,y2:H-16,stroke:'oklch(0.96 0.01 240)',strokeWidth:1.5,strokeDasharray:'3 3'}));
+    kids.push(E('text',{key:'tv',x:Math.min(W-24,Math.max(24,X(yi))),y:Math.max(11,Yv(tot[yi])-6),fill:'oklch(0.96 0.01 240)',fontFamily:'IBM Plex Mono',fontSize:10,fontWeight:600,textAnchor:'middle'},'$'+tot[yi].toFixed(1)+'B'));
+    Y.forEach((y,i)=>kids.push(E('text',{key:'y'+i,x:X(i),y:H-3,fill:i===yi?'oklch(0.96 0.01 240)':'oklch(0.60 0.02 245)',fontFamily:'IBM Plex Mono',fontSize:8.5,textAnchor:'middle'},"'"+String(y).slice(2))));
+    return E('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',style:{display:'block'}},...kids)}
+  extraVals(tab,yi,year,ya){
+    const st=this.state,E={anoms:[],hasAnoms:false,salmonR:[],stripes:[],iceBars:[],homeStats:[],food:[],subs:[],healthStats:[],gaps:[],ribLegend:[],onbBars:[],onbDots:[],onb0:false,onb1:false,onb2:false,onbTitle:'',onbBody:'',onbCta:'',pinLeadLabel:'☆ Pin',map3dRead:'',home:'',culture:'',health:'',iceRead:'',ribRead:'',pyrRead:''},f=k=>M[k].f(M[k].v[yi]),d=k=>delta(k,yi);
+    const light=st.light??(this.props.theme==='light');
+    E.themeFilter=light?'invert(1) hue-rotate(180deg)':'none';E.toggleTheme=()=>this.setState({light:!light});
+    E.savedCount=st.saved.length;E.openSaved=()=>this.go('saved',{back:tab});E.openWhatIf=()=>this.go('whatif',{back:tab});
+    E.goBack=()=>this.go(st.back||'story');E.backName=({story:'Story',pulse:'Pulse',explore:'Explore',map:'Map',ask:'Ask AI',topic:'Back',compare:'Compare',saved:'Saved',whatif:'What-if'})[st.back]||'Story';
+    E.isWhatIf=tab==='whatif';E.isSaved=tab==='saved';E.exportAll=()=>this.csv(Object.keys(M));
+    E.pointOn=!!st.point;E.showPointBtn=tab!=='ask'&&st.onb==null;E.togglePoint=()=>this.setState({point:!st.point});E.pointLabel=st.point?'✕  Cancel':'◎  Point & ask';E.pointBg=st.point?C.t:'oklch(0.21 0.04 200)';E.pointFg=st.point?C.bg:C.g;
+    E.hasToast=!!st.toast;E.toast=st.toast||'';
+    const ob=st.onb;E.onbOn=ob!=null;E.openOnb=()=>this.setState({onb:0});
+    if(ob!=null){E.onb0=ob===0;E.onb1=ob===1;E.onb2=ob===2;E.onbTitle=OB[ob][0];E.onbBody=OB[ob][1];E.onbCta=ob<2?'Next':'Start exploring';E.onbDots=OB.map((_,i)=>({w:i===ob?'22px':'8px',c:i===ob?C.s:C.dim}));const done=()=>{try{localStorage.setItem('akpulse-onb','1')}catch(e){}this.setState({onb:null})};E.onbNext=()=>ob<2?this.setState({onb:ob+1}):done();E.onbSkip=done;E.onbBars=M.visitors.v.map((v,i)=>({h:(24+130*(M.pfd.v[i]/3284)).toFixed(0)+'px',bg:i===9?C.s:C.dim,y:"'"+String(Y[i]).slice(2)}));if(ob===2)E.onbSvg=this.field2(this.frows(),9,st.th,false)}
+    const cm=st.cmpMode||'years';E.isCmpYears=cm==='years';E.isCmpRegions=cm==='regions';
+    E.cmpModes=[['years','Years'],['regions','Regions']].map(([id,l])=>({label:l,bg:id===cm?C.t:'transparent',color:id===cm?C.bg:C.m,onClick:()=>this.setState({cmpMode:id})}));
+    const ra=REG.find(r=>r.abbr===st.ra)||REG[13],rb=REG.find(r=>r.abbr===st.rb)||REG[7];
+    const rchip=(sel,col,key)=>REG.map(r=>({label:r.abbr,bg:r.abbr===sel?col:C.sf,color:r.abbr===sel?C.bg:C.m,onClick:()=>this.setState({[key]:r.abbr})}));
+    E.regA=rchip(ra.abbr,C.s,'ra');E.regB=rchip(rb.abbr,C.b,'rb');E.regAName=ra.name;E.regBName=rb.name;
+    if(cm==='regions'){const F=[['Population (2024)','pop',v=>n0(v*1000),0],['Change since 2015','chg',v=>(v>0?'+':'')+v+'%',1],['Alaska Native share','native',v=>v+'%',1],['Median household income','income',v=>'$'+v+'k',0]];
+      const raw=F.map(([label,key,fm,diff])=>{const a=ra[key],b=rb[key],x=diff?(b-a):((b-a)/Math.abs(a||1)*100);return{label,a:ra.abbr+' · '+fm(a),b:fm(b)+' · '+rb.abbr,x,chg:a===b?'same':(diff?(b>a?'+':'−')+Math.abs(b-a)+' pts':(b>a?'+':'−')+Math.abs(x).toFixed(0)+'%'),color:b>=a?C.b:C.s}});
+      const xm=Math.max(1,...raw.map(q=>Math.abs(q.x)));E.cmpRows=raw.map(q=>{const w=Math.abs(q.x)/xm*50;return{...q,w:w.toFixed(1)+'%',left:(q.x>=0?50:50-w).toFixed(1)+'%'}});
+      E.compareLabel=ra.name+' vs '+rb.name;E.askCompare=()=>this.send('Compare '+ra.name+' and '+rb.name+' — population trend, Alaska Native share, income and what daily life looks like in each.')}
+    const w=st.wi,oilRev=w.prod*1000*365*w.price*0.115/1e9,pf=3.6,other=0.6,pfGov=pf*(1-w.share/100),div=w.share/100*pf*1e9/640000,ugf=oilRev+pfGov+other,spend=4.9,gap=ugf-spend;
+    const setW=key=>e=>this.setState({wi:{...this.state.wi,[key]:+e.target.value}});
+    E.wiSliders=[{label:'ANS crude price',val:'$'+w.price+'/bbl',v:w.price,min:40,max:130,step:1,lo:'$40',hi:'$130',hint:'2024: $81',onChange:setW('price')},{label:'North Slope production',val:w.prod+'k bbl/day',v:w.prod,min:300,max:600,step:5,lo:'300k',hi:'600k',hint:'2024: 425k',onChange:setW('prod')},{label:'Fund draw paid as dividends',val:w.share+'%',v:w.share,min:0,max:75,step:1,lo:'0%',hi:'75%',hint:'2024: ~25%',onChange:setW('share')}];
+    E.wiOut=[{label:'OIL REVENUE',v:'$'+oilRev.toFixed(2)+'B',sub:'per year',c:C.s},{label:'DIVIDEND',v:'$'+n0(div),sub:'per resident',c:C.g},{label:gap>=0?'SURPLUS':'BUDGET GAP',v:(gap>=0?'+':'−')+'$'+Math.abs(gap).toFixed(2)+'B',sub:'vs $4.9B spend',c:gap>=0?C.g:C.s}];
+    const sc=Math.max(ugf,spend)*1.08;
+    E.wiSegs=[['Oil',oilRev,C.s],['Permanent Fund',pfGov,C.b],['Other',other,'oklch(0.60 0.02 245)']].map(([label,v,c])=>({label,val:'$'+v.toFixed(2)+'B',w:(v/sc*100).toFixed(1)+'%',c}));
+    E.wiSpendX=(spend/sc*100).toFixed(1)+'%';
+    E.wiNote='White line = $4.9B spending. '+(gap>=0?'Revenue covers spending with $'+gap.toFixed(2)+'B to spare.':'The state would need $'+Math.abs(gap).toFixed(2)+'B from savings, new taxes or cuts.')+' Simplified model: ~11.5% effective oil take, $3.6B annual Fund draw, 640k eligible residents.';
+    E.wiPin=()=>this.pin({kind:'SCENARIO',title:'Oil $'+w.price+' · '+w.prod+'k bbl/d · '+w.share+'% to PFD',detail:'Oil revenue $'+oilRev.toFixed(2)+'B, dividend $'+n0(div)+', '+(gap>=0?'surplus':'gap')+' $'+Math.abs(gap).toFixed(2)+'B.'});
+    E.wiAsk=()=>this.send('I am modeling a scenario: oil at $'+w.price+'/bbl, production '+w.prod+'k bbl/day, '+w.share+'% of the Permanent Fund draw paid as dividends. That gives roughly $'+oilRev.toFixed(2)+'B oil revenue, a $'+n0(div)+' PFD and a '+(gap>=0?'surplus':'gap')+' of $'+Math.abs(gap).toFixed(2)+'B. How realistic is this and what are the trade-offs?');
+    E.noSaved=!st.saved.length;E.savedList=st.saved.map(s=>({...s,hasBars:!!s.k,bars:s.k?bars(s.k,yi):[],remove:()=>this.setState({saved:this.state.saved.filter(x=>x.id!==s.id)})}));E.exportReport=()=>this.exportReport();
+    E.mapViews=[['flat','Tile map'],['3d','3D · time']].map(([id,l])=>{const on=(id==='3d')===!!st.map3d;return{label:l,bg:on?C.t:'transparent',color:on?C.bg:C.m,onClick:()=>this.setState({map3d:id==='3d'})}});
+    E.map3d=!!st.map3d;E.gridDisplay=st.map3d?'none':'grid';
+    if(tab==='map'&&st.map3d){const t=st.t??yi;E.mapSvg=this.map3d(t,st.th);E.map3dRead=Y[Math.min(9,Math.floor(t))]+' · height = population · color = '+MAPM[st.mapM].label.toLowerCase();E.togglePlay=()=>this.togglePlay();E.playIcon=st.playing?'❚❚ PAUSE':'▶ PLAY'}
+    if(tab==='story'){const t=st.t??yi;
+      E.pyrSvg=this.field2(AGES.map((a,i)=>({label:a,hue:AHUE[i],v:Y.map((_,j)=>A15[i]+(A24[i]-A15[i])*j/9)})),t,st.th,true);
+      E.pyrRead='65+ share '+(A15[6]+(A24[6]-A15[6])*yi/9).toFixed(1)+'% in '+year+' (10.0% in 2015) · ages 18–24 shrinking fastest';
+      const tot=BUDGET.reduce((s,b)=>s+b.v[yi],0);E.ribbonSvg=this.ribbon(yi);E.ribLegend=BUDGET.map(b=>({label:b.label,c:b.c,v:'$'+b.v[yi].toFixed(1)+'B'}));
+      E.ribRead=year+': $'+tot.toFixed(1)+'B in unrestricted revenue, '+Math.round(BUDGET[0].v[yi]/tot*100)+'% from oil. Since 2019 Permanent Fund earnings — not oil — are the state’s largest revenue source.';
+      E.salmonR=SALMONR.map(([label,v,u])=>{const mx=Math.max(...v);return{label,val:(v[yi]>=10?v[yi].toFixed(0):v[yi].toFixed(1))+u,bars:v.map((x,i)=>({h:Math.max(3,x/mx*100).toFixed(0)+'%',bg:i===yi?C.s:C.dim})),onClick:this.tap(label+' harvest in '+year,v[yi]+u,()=>this.openTopic('salmon','story'))}});
+      E.stripes=STR.map(s=>({bg:stripe(s.v),o:s.y===year?'inset 0 -8px 0 oklch(0.96 0.01 240)':'none'}));
+      E.iceBars=bars('ice',yi);E.iceRead=f('ice')+'M km² in '+year+' · record low ≈3.4 (2012)';
+      E.home='The average home sold for '+f('home')+' and median rent reached '+f('rent')+' a month ('+d('rent').text+'). Groceries are the starker divide: a week of food for a family of four costs roughly twice as much in rural hubs as in Anchorage.';
+      const st2=(k,lab)=>{const dd=d(k);return{label:lab,v:f(k),d:dd.text,dc:dd.color,onClick:this.tap(M[k].label+' in '+year,f(k),()=>this.openTopic(k,'story'))}};
+      E.homeStats=[st2('home','AVG HOME PRICE'),st2('rent','MEDIAN RENT')];
+      E.food=FOOD.map(([n,v])=>({name:n,v:'$'+v,w:(v/640*100).toFixed(0)+'%',bg:v>400?C.s:C.b}));
+      E.culture='About one in five Alaskans ('+f('native')+') is Alaska Native, belonging to 229 federally recognized tribes and 20 distinct languages. In rural regions, wild foods — salmon, caribou, moose, marine mammals, berries — still supply hundreds of pounds per person every year.';
+      E.subs=SUBS.map(([n,v])=>({name:n,v:'~'+v+' lb',w:(v/520*100).toFixed(0)+'%'}));
+      E.openLangs=()=>this.go('explore');
+      E.health=f('grad')+' of students graduated high school in four years, and life expectancy at birth was '+f('life')+' years ('+d('life').text+'). Statewide averages hide a wide gap between the road system and rural Alaska:';
+      E.healthStats=[st2('grad','GRADUATION'),st2('life','LIFE EXPECTANCY')];
+      E.gaps=GAPS.map(([label,u,a,b])=>({label,a:a+u,b:b+u,wa:(a/Math.max(a,b)*100).toFixed(0)+'%',wb:(b/Math.max(a,b)*100).toFixed(0)+'%'}));
+      E.anoms=anomsFor(yi).map(a=>{const m=M[a.k],dd=delta(a.k,yi);return{label:m.label,chg:(a.dd>=0?'▲ ':'▼ ')+(m.fd||m.f)(Math.abs(a.dd)),z:Math.abs(a.z).toFixed(1)+'σ',c:dd.color,why:'A '+Math.abs(a.z).toFixed(1)+'-sigma swing versus its typical year-over-year change. '+m.notes[0],onClick:this.tap(m.label+' in '+year,f(a.k),()=>this.openTopic(a.k,'story'))}});E.hasAnoms=E.anoms.length>0;
+      const lt='Alaska in '+year;E.pinLead=()=>this.pin({kind:'STORY',title:lt,detail:st.story[year]||NARR[yi]});E.pinLeadLabel=this.isPinned(lt)?'★ Pinned':'☆ Pin'}
+    if(tab==='ask'){E.msgs=st.msgs.map(mm=>{const u=mm.role==='user',ch=mm.chart,acts=[];
+      if(!u){(mm.keys||[]).slice(0,2).forEach(k=>acts.push({label:M[k].label+' ›',onClick:()=>this.openTopic(k,'ask')}));const ys=mm.years||[];
+        if(ys.length>=2)acts.push({label:'Compare '+ys[0]+'–'+ys[ys.length-1]+' ›',onClick:()=>this.setState({tab:'compare',cmpMode:'years',ca:Y.indexOf(ys[0]),cb:Y.indexOf(ys[ys.length-1]),from:'ask'})});
+        else if(ys.length===1)acts.push({label:ys[0]+' story ›',onClick:()=>{this.setYi(Y.indexOf(ys[0]));this.go('story')}});
+        const title='Aurora: '+String(mm.q||'answer').slice(0,60);acts.push({label:this.isPinned(title)?'★ Pinned':'☆ Pin',onClick:()=>this.pin({kind:'AI ANSWER',title,detail:mm.text,k:ch||undefined})})}
+      return{text:mm.text,tag:u?'YOU':'AURORA',tagColor:u?C.m:C.g,align:u?'flex-end':'flex-start',bg:u?C.b:C.sf,fg:u?C.bg:C.t,border:u?'0px solid transparent':'1px solid oklch(0.30 0.03 255)',hasChart:!u&&!!ch,chartLabel:ch?M[ch].label.toUpperCase()+' · 2015–24':'',bars:ch?bars(ch,yi):[],openChart:()=>ch&&this.openTopic(ch,'ask'),hasActions:acts.length>0,actions:acts}})}
+    return E;
+  }
+  storyVals(tab,yi,year){
+    if(tab!=='story')return{isStory:false};
+    const st=this.state,t=st.t??yi,f=k=>M[k].f(M[k].v[yi]),d=k=>delta(k,yi).text,mig=M.netmig.v[yi];
+    const signals=Object.keys(M).map(k=>{const v=M[k].v,dd=delta(k,yi);return{label:M[k].label,value:f(k),delta:yi?dd.text.replace(' vs '+(year-1),''):'—',dColor:dd.color,rank:'#'+([...v].sort((a,b)=>b-a).indexOf(v[yi])+1),onClick:this.tap(M[k].label+' in '+year,f(k),()=>this.openTopic(k,'story'))}});
+    const tt=Math.min(9,t);
+    return{isStory:true,fieldSvg:this.field2(this.frows(),t,st.th,false),trajSvg:this.traj(t,st.th),playIcon:st.playing?'❚❚  PAUSE':'▶  PLAY 10 YRS',togglePlay:()=>this.togglePlay(),
+      storyLead:st.story[year]||NARR[yi],leadSource:st.story[year]?'Rewritten by Aurora · live':'Drafted by Aurora · 12 indicators',rewrite:()=>this.rewrite(),rewriteLabel:st.storyBusy?'Writing…':'Rewrite ↻',
+      legend:FIELD.map((k,i)=>({label:M[k].label,c:`oklch(0.80 0.12 ${FHUE[i]})`})),
+      people:`${f('pop')} Alaskans lived in the state (${d('pop')}). ${mig>=0?'Slightly more people arrived than left':'Roughly '+M.netmig.fd(Math.abs(mig))+' more people left than arrived'} — ${mig<-5?'one of the steeper outflows of the decade':'a milder year for out-migration'}. Alaska Native residents made up ${f('native')} of the population, the highest Indigenous share of any state.`,
+      money:`The Permanent Fund Dividend paid ${f('pfd')} while North Slope crude averaged ${f('oilprice')} a barrel. Employers counted ${f('jobs')} jobs, unemployment sat at ${f('unemp')}, and median household income reached ${f('income')}. Follow the line below: oil price, dividend and jobs moving together through time.`,
+      land:`Fishers landed ${f('salmon')} million salmon and ${f('visitors')} visitors arrived. North Slope wells produced ${f('oil')}k barrels a day, and the year ran ${f('temp')}F against the 20th-century average.`,
+      signals,trajRead:Y[Math.floor(tt)]+' · oil $'+iv('oilprice',tt).toFixed(0)+' · PFD $'+n0(iv('pfd',tt))+' · '+iv('jobs',tt).toFixed(0)+'k jobs'}
+  }
+  go(tab,extra){this.setState({tab,...(extra||{})})}
+  openTopic(k,from){this.go('topic',{topic:k,from:from||this.tab()})}
+  fallback(q,ks){
+    const yi=this.yi(),ym=q.match(/20[12]\d/);const i=ym&&Y.indexOf(+ym[0])>=0?Y.indexOf(+ym[0]):yi;
+    if(!ks.length){return 'Here’s the big picture for '+Y[i]+': '+NARR[i]+'\n\nAsk me about a specific indicator — population, migration, jobs, the PFD, oil, salmon, tourism or climate — and I’ll break it down.'}
+    return ks.slice(0,2).map(k=>{const m=M[k],v=m.v,mx=v.indexOf(Math.max(...v)),mn=v.indexOf(Math.min(...v));const ch=k==='temp'||k==='netmig'||k==='native'||k==='unemp'?((m.fd||m.f)(Math.abs(v[9]-v[0])))+(v[9]>=v[0]?' higher':' lower'):(Math.abs((v[9]-v[0])/v[0]*100).toFixed(0)+'% '+(v[9]>=v[0]?'higher':'lower'));
+      return m.label+' was '+m.f(v[i])+' in '+Y[i]+'. Across 2015–2024 it peaked in '+Y[mx]+' ('+m.f(v[mx])+') and bottomed in '+Y[mn]+' ('+m.f(v[mn])+'); 2024 ended '+ch+' than 2015. '+m.notes[0]}).join('\n\n')
+  }
+  async ai(prompt,q,ks){
+    if(this.props.liveAI!==false&&window.claude&&window.claude.complete){try{const r=await window.claude.complete(prompt);if(r&&r.trim())return r.trim()}catch(e){}}
+    await new Promise(r=>setTimeout(r,700));return this.fallback(q,ks)
+  }
+  async send(q){
+    q=(q||'').trim();if(!q||this.state.busy)return;
+    const ks=detect(q);const msgs=[...this.state.msgs,{role:'user',text:q}];
+    this.setState({msgs,input:'',busy:true,tab:'ask'});
+    const hist=msgs.slice(-6).map(m=>(m.role==='user'?'User: ':'Aurora: ')+m.text).join('\n');
+    const prompt='You are Aurora, a friendly data analyst inside a mobile app about Alaska. Answer in under 110 words of plain text (no markdown, no bullet symbols). Cite specific numbers and years from the data, explain likely drivers, and note uncertainty when relevant. The user is currently viewing year '+Y[this.yi()]+'.\n\nDATA:\n'+DATA+'\n\nCONVERSATION:\n'+hist+'\nAurora:';
+    const text=await this.ai(prompt,q,ks);
+    this.setState(s=>({busy:false,msgs:[...s.msgs,{role:'ai',q,text,chart:ks[0]||null,keys:[...new Set([...ks,...detect(text)])],years:[...new Set((q+' '+text).match(/20(1[5-9]|2[0-4])/g)||[])].map(Number).sort()}]}));
+  }
+  async explain(){
+    const k=this.state.topic,yi=this.yi(),key=k+Y[yi];if(this.state.explainBusy)return;
+    this.setState({explainBusy:true});const m=M[k];
+    const prompt='You are Aurora, a data analyst in an Alaska data app. In under 75 words of plain text, explain this bar chart of '+m.label+' ('+m.unit+') in Alaska 2015–2024 to a non-expert: the overall trend, what stands out about '+Y[yi]+', and one likely driver.\nValues: '+Y.map((y,i)=>y+'='+m.v[i]).join(', ')+'\nContext: '+m.notes.join(' ')+'\nYear summary '+Y[yi]+': '+NARR[yi];
+    const text=await this.ai(prompt,m.label+' '+Y[yi],[k]);
+    this.setState(s=>({explainBusy:false,explain:{...s.explain,[key]:text}}));
+  }
+  renderVals(){
+    const tab=this.tab(),yi=this.yi(),year=Y[yi],st=this.state,ya=st.playing?Math.min(9,st.t??yi):(st.ya??yi);
+    const popV=M.pop.v,plo=Math.min(...popV)-1.5,phi=Math.max(...popV)+1.5;
+    const pts=popV.map((v,i)=>[6+i*(314/9),8+(1-(v-plo)/(phi-plo))*90]);
+    const popLine='M'+pts.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' L');
+    const pd=delta('pop',yi);
+    const years=Y.map((y,i)=>({label:"'"+String(y).slice(2),onClick:()=>this.setYi(i),bg:i===yi?C.t:C.sf,color:i===yi?C.bg:C.m,bar:i===yi?C.s:C.dim,h:(4+18*(popV[i]-plo)/(phi-plo)).toFixed(0)+'px'}));
+    const tiles=['unemp','oil','salmon','visitors','pfd','temp'].map(k=>{const d=delta(k,yi);return{label:M[k].label.toUpperCase(),value:M[k].f(iv(k,ya)),delta:d.text,dColor:d.color,bars:bars(k,yi),onClick:this.tap(M[k].label+' in '+year,M[k].f(M[k].v[yi]),()=>this.openTopic(k,'pulse'))}});
+    const groups=GROUPS.map(([name,ks])=>({name,items:ks.map(k=>{const d=delta(k,yi);return{label:M[k].label,value:M[k].f(M[k].v[yi]),delta:d.text,dColor:d.color,bars:bars(k,yi),onClick:this.tap(M[k].label+' in '+year,M[k].f(M[k].v[yi]),()=>this.openTopic(k,'explore'))}})}));
+    const lmax=Math.max(...LANGS.map(l=>l[1]));
+    const langs=LANGS.map(([name,n])=>({name,n:n?'~'+n.toLocaleString():'0',w:n?Math.max(2,Math.sqrt(n/lmax)*100).toFixed(0)+'%':'0%'}));
+    const k=st.topic,m=M[k],td=delta(k,yi),v=m.v,mx=Math.max(...v),mn=Math.min(...v);
+    const lo=mn<=0?mn-(mx-mn)*0.05:mn-(mx-mn)*0.5,r=mx-lo||1;
+    const spanPct=k==='temp'||k==='netmig'||k==='native'||k==='unemp'?(v[9]>=v[0]?'+':'−')+(m.fd||m.f)(Math.abs(v[9]-v[0])):(v[9]>=v[0]?'+':'−')+Math.abs((v[9]-v[0])/v[0]*100).toFixed(0)+'%';
+    const tp={label:m.label,group:m.group,unit:m.unit,value:m.f(iv(k,ya)),color:m.c,delta:td.text,dColor:td.color,notes:m.notes,lo:m.f(mn)+" '"+String(Y[v.indexOf(mn)]).slice(2),hi:m.f(mx)+" '"+String(Y[v.indexOf(mx)]).slice(2),span:spanPct,
+      bars:v.map((x,i)=>({v:m.f(x),op:i===yi?1:0,y:"'"+String(Y[i]).slice(2),lc:i===yi?C.t:C.m,h:(6+86*(x-lo)/r).toFixed(1)+'%',bg:i===yi?m.c:C.dim,onClick:this.tap(m.label+' in '+Y[i],m.f(x),()=>this.setYi(i)),flag:FLAGS[k][i]?'◆':''}))};
+    const rows=v.map((x,i)=>({y:Y[i],v:x,vs:m.f(x),yoy:i?((x-v[i-1]>=0?'+':'−')+(m.fd||m.f)(Math.abs(x-v[i-1]))):'—',flag:FLAGS[k][i]?'◆':'',c:i===yi?m.c:C.t}));
+    const so=st.sort||{by:'y',dir:1};rows.sort((a,b)=>(a[so.by]-b[so.by])*so.dir);
+    const ptitle=m.label+' · 2015–2024';
+    Object.assign(tp,{rows,src:m.src[0],updated:m.src[1],hasWhatIf:['pfd','oil','oilprice'].includes(k),sortY:'YEAR'+(so.by==='y'?(so.dir>0?' ↑':' ↓'):''),sortV:'VALUE'+(so.by==='v'?(so.dir>0?' ↑':' ↓'):''),onSortY:()=>this.setState({sort:{by:'y',dir:so.by==='y'?-so.dir:1}}),onSortV:()=>this.setState({sort:{by:'v',dir:so.by==='v'?-so.dir:-1}}),exportCsv:()=>this.csv([k]),pin:()=>this.pin({kind:'CHART',title:ptitle,detail:m.label+' was '+m.f(v[yi])+' in '+year+'. '+m.notes[0],k}),pinLabel:this.isPinned(ptitle)?'★ Pinned':'☆ Pin chart'});
+    const exKey=k+year,exText=st.explain[exKey];
+    const chip=(sel,col,set)=>Y.map((y,i)=>({label:"'"+String(y).slice(2),bg:i===sel?col:C.sf,color:i===sel?C.bg:C.m,onClick:()=>set(i)}));
+    const ckeys=['pop','netmig','jobs','unemp','income','pfd','home','rent','oil','oilprice','salmon','visitors','grad','life','temp','ice'];
+    const raw=ckeys.map(k2=>{const mm=M[k2],a=mm.v[st.ca],b=mm.v[st.cb],diffM=['temp','netmig','unemp','native'].includes(k2),rng=Math.max(...mm.v)-Math.min(...mm.v)||1;const x=diffM?(b-a)/rng*100:(b-a)/Math.abs(a)*100;const good=mm.up?b>a:b<a;
+      return{label:mm.label,a:Y[st.ca]+' · '+mm.f(a),b:mm.f(b)+' · '+Y[st.cb],x,chg:a===b?'no change':diffM?(b>a?'+':'−')+(mm.fd||mm.f)(Math.abs(b-a)):(b>a?'+':'−')+Math.abs(x).toFixed(0)+'%',color:a===b||mm.neutral?C.m:(good?C.g:C.s)}});
+    const xmax=Math.max(1,...raw.map(q=>Math.abs(q.x)));
+    const cmpRows=raw.map(q=>{const w=Math.abs(q.x)/xmax*50;return{...q,w:w.toFixed(1)+'%',left:(q.x>=0?50:50-w).toFixed(1)+'%'}});
+    const mk=st.mapM,vals=REG.map(r2=>r2[mk]),vmin=Math.min(...vals),vmax=Math.max(...vals),amax=Math.max(...vals.map(Math.abs));
+    const col=v2=>{let t,h;if(mk==='chg'){t=Math.min(Math.abs(v2)/15,1);h=v2>=0?165:40}else{t=(v2-vmin)/(vmax-vmin);h=mk==='native'?165:230}const L=0.30+0.52*t;return{bg:`oklch(${L.toFixed(3)} ${(0.03+0.11*t).toFixed(3)} ${h})`,fg:L>0.62?C.bg:C.t}};
+    const tilesMap=REG.map(r2=>{const c2=col(r2[mk]);return{abbr:r2.abbr,row:r2.row,col:r2.col,val:MAPM[mk].f(r2[mk]),bg:c2.bg,fg:c2.fg,outline:r2.abbr===st.reg?'2px solid '+C.t:'0px solid transparent',onClick:this.tap(r2.name+' · '+MAPM[mk].label,MAPM[mk].f(r2[mk]),()=>this.setState({reg:r2.abbr}))}});
+    const ranked=[...REG].sort((a,b)=>b[mk]-a[mk]).map(r2=>({name:r2.name,val:MAPM[mk].f(r2[mk]),tc:r2.abbr===st.reg?C.t:C.m,w:(mk==='chg'?Math.abs(r2[mk])/amax*100:r2[mk]/vmax*100).toFixed(0)+'%',bg:mk==='chg'?(r2[mk]>=0?C.g:C.s):(mk==='native'?C.g:C.b),onClick:()=>this.setState({reg:r2.abbr})}));
+    const R=REG.find(r2=>r2.abbr===st.reg)||REG[13];
+    const reg={name:R.name,abbr:R.abbr,pop:R.pop>=100?n0(R.pop*1000):(R.pop*1000).toLocaleString(),chg:MAPM.chg.f(R.chg),chgColor:R.chg>=0?C.g:C.s,native:R.native+'%',income:'$'+R.income+'k'};
+    const msgs=st.msgs.map(mm=>{const u=mm.role==='user';const ch=mm.chart;return{text:mm.text,tag:u?'YOU':'AURORA',tagColor:u?C.m:C.g,align:u?'flex-end':'flex-start',bg:u?C.b:C.sf,fg:u?C.bg:C.t,border:u?'0px solid transparent':'1px solid oklch(0.30 0.03 255)',hasChart:!u&&!!ch,chartLabel:ch?M[ch].label.toUpperCase()+' · 2015–24':'',bars:ch?bars(ch,yi):[],openChart:()=>ch&&this.openTopic(ch,'ask')}});
+    const sq=['What defined Alaska’s economy in '+year+'?','Why do people keep leaving Alaska?','How has the PFD tracked oil prices?','Which regions are growing fastest?'];
+    const tabs=[['story','Story'],['pulse','Pulse'],['explore','Explore'],['map','Map'],['ask','Ask AI']].map(([id,label])=>{const on=tab===id||((tab==='topic'||tab==='compare')&&(st.from||'explore')===id)||((tab==='whatif'||tab==='saved')&&st.back===id);return{label,color:on?C.t:C.m,ind:on?C.s:'transparent',onClick:()=>this.go(id)}});
+    return {
+      isPulse:tab==='pulse',isExplore:tab==='explore',isTopic:tab==='topic',isCompare:tab==='compare',isMap:tab==='map',isAsk:tab==='ask',
+      scrollRef:this.scrollRef,year,years,prevYear:()=>this.setYi(yi-1),nextYear:()=>this.setYi(yi+1),
+      popStr:M.pop.f(iv('pop',ya)),popDelta:pd.text,popDeltaColor:pd.color,popLine,popArea:popLine+` L${pts[9][0].toFixed(1)} 104 L${pts[0][0].toFixed(1)} 104 Z`,popX:(6+ya*(314/9)).toFixed(1),popY:(8+(1-(iv('pop',ya)-plo)/(phi-plo))*90).toFixed(1),
+      narrative:NARR[yi],askYear:()=>this.send('What were the biggest forces shaping Alaska in '+year+'?'),
+      tiles,nativeStr:M.native.f(M.native.v[yi]),migStr:M.netmig.f(M.netmig.v[yi]),nativeW:M.native.v[yi]+'%',openNative:()=>this.openTopic('native','pulse'),openMig:()=>this.openTopic('netmig','pulse'),
+      groups,langs,askLang:()=>this.send('What is the state of Alaska Native language revitalization?'),openCompare:()=>this.go('compare',{from:'explore'}),compareLabel:Y[st.ca]+' vs '+Y[st.cb],
+      tp,backLabel:({pulse:'Pulse',ask:'Ask AI',story:'Story'})[st.from]||'Explore',backExplore:()=>this.go(st.from||'explore'),
+      hasExplain:!!exText,explainText:exText||'',explainBusy:st.explainBusy,showExplainBtn:!exText&&!st.explainBusy,explain:()=>this.explain(),askTopic:()=>this.send('Tell me more about '+m.label.toLowerCase()+' in Alaska — what drove the changes?'),
+      cmpA:chip(st.ca,C.s,i=>this.setState({ca:i})),cmpB:chip(st.cb,C.b,i=>this.setState({cb:i})),cmpRows,askCompare:()=>this.send('What changed most in Alaska between '+Y[st.ca]+' and '+Y[st.cb]+', and why?'),
+      mapMetrics:Object.entries(MAPM).map(([id,mm])=>({label:mm.label,bg:id===mk?C.t:'transparent',color:id===mk?C.bg:C.m,onClick:()=>this.setState({mapM:id})})),
+      tilesMap,ranked,reg,mapTitle:MAPM[mk].title,legendLo:mk==='chg'?'◀ shrinking':'low',legendHi:mk==='chg'?'growing ▶':'high',askRegion:()=>this.send('Tell me about '+R.name+' — how does it compare to the rest of Alaska?'),
+      aiMode:this.props.liveAI===false?'AI ANALYST · DEMO MODE':'AI ANALYST · LIVE',noMsgs:st.msgs.length===0,suggestions:sq.map(q=>({q,onClick:()=>this.send(q)})),msgs,busy:st.busy,input:st.input,
+      onInput:e=>this.setState({input:e.target.value}),onKey:e=>{if(e.key==='Enter')this.send(st.input)},sendInput:()=>this.send(st.input),
+      tabs,...this.storyVals(tab,yi,year),...this.extraVals(tab,yi,year,ya)
+    };
+  }
+}
+</script>
+</body>
+</html>
